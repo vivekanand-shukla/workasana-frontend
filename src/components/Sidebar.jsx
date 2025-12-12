@@ -26,7 +26,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/" style={({ isActive }) => ({
+          <NavLink to="/projectmanage" style={({ isActive }) => ({
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
