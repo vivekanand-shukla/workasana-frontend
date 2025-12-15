@@ -3,8 +3,9 @@ import { useState } from 'react'
 import { Url } from "../customHooks/useMainUrl"
 import useCRUD from '../customHooks/useCrud'
 import { Link } from 'react-router-dom'
-
+import { useNavigate  } from "react-router-dom"
 const Signup = () => {
+   const navigate = useNavigate();
 
     // url → Url/auth/signup
     const { url } = Url();
@@ -35,6 +36,7 @@ const Signup = () => {
 
         if (response) {
             alert("Signup successful!");
+              navigate("/login", { replace: true });
         } else {
             alert(error || "Signup failed");
         }
@@ -122,8 +124,8 @@ const Signup = () => {
                     >
                         Sign in
                     </button>
-                    <p>Already have an account ?{<><Link to={`/login`}>Login </Link></>}  </p>
                 </div>
+                    <p className='my-4'>Already have an account ?{<><Link to={`/login`}>Login </Link></>}  </p>
             </form>
         </div>
     )

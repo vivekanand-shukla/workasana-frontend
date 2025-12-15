@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { Url } from "../customHooks/useMainUrl"
 import useCRUD from '../customHooks/useCrud'
-
+import { useNavigate , Link } from "react-router-dom"
 
 
 
 const Login = () => {
    const { url } = Url();
     const { CRUD, loading, error } = useCRUD();
+const navigate = useNavigate();
 
     // Form State
     const [form, setForm] = useState({
@@ -22,7 +23,6 @@ const Login = () => {
             [e.target.id]: e.target.value
         });
     };
-
     // Handle Login Submit
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -35,6 +35,7 @@ const Login = () => {
             console.log(response)
             localStorage.setItem("token", response.jwtToken);
             alert("Login Successful!");
+              navigate("/", { replace: true });
         } else {
             alert(error || "Login failed");
         }
@@ -100,6 +101,7 @@ const Login = () => {
                         Sign in
                     </button>
                 </div>
+                <p className='my-4'>Don’t have an account?{<><Link to={`/signup`}>Signup </Link></>}  </p>
             </form>
         </div>
     )
