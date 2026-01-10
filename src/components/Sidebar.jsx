@@ -1,11 +1,18 @@
-import React from 'react';
+import React from 'react'
+import './Sidebar.css'
 import { NavLink } from 'react-router-dom';
 import { MdDashboard, MdFolder, MdPeople, MdBarChart, MdSettings } from 'react-icons/md';
-
+import { useUserContext } from "../Context/UserContext";
+import OpenCloseSidebar from './OpenCloseSidebar';
 const Sidebar = () => {
+
+  const { open, setOpen } = useUserContext();
   return (
-    <div style={{ width: '220px', height: '100vh', backgroundColor: '#f5f5ff', padding: '24px 16px'  , display:"inline-block"}}  >
-      
+    <div  className={`sidebar ${open ? "open" : "closed"}`}   style={{ width: '220px', height: '100vh', backgroundColor: '#f5f5ff', padding: '24px 16px'  , display:"inline-block"}}   >
+         <div style={{position:"absolute", top:"5vh", left:"92vw"}}>
+           <OpenCloseSidebar/>
+          
+          </div>
       <div style={{ marginBottom: '32px' }}>
         <h4 style={{ color: '#6366f1', fontSize: '18px', margin: 0 }}>workasana</h4>
       </div>

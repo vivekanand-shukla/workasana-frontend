@@ -1,0 +1,28 @@
+@media (max-width: 378px) {
+
+
+    .mybtn{
+    font-size:9px !important;
+    height: 26px;
+    width: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2 5;
+  white-space: nowrap; 
+ line-height: 1;  
+ margin: 5px;
+  }
+
+  .myfilter{
+   
+ 
+    font-size: 11px !important;
+  }
+.myh2{
+  white-space: nowrap; 
+    font-size: 15px !important;
+    font-weight:400;
+}
+
+}

@@ -4,38 +4,38 @@ import { Url } from "../customHooks/useMainUrl"
 import Sidebar from '../components/Sidebar'
 import { useParams } from 'react-router-dom'
 const ProjectManage = () => {
-  const id =    useParams()
+  const id = useParams()
   const { url } = Url()
   const { CRUD, loading, error } = useCRUD();
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const [sortBy, setSortBy] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
-  const [projectsFilter ,setProjectFilter] = useState({})
-  const [filterTasks , setFilterTasks ] = useState([])
+  const [projectsFilter, setProjectFilter] = useState({})
+  const [filterTasks, setFilterTasks] = useState([])
 
-   
+
   if (tasks.length > 0) {
-    console.log(tasks)
+    console.log("hi vivek ", tasks)
   }
   if (projectsFilter) {
     console.log(projectsFilter)
   }
-    if (filterTasks.length >1 ) {
-    console.log( "hi vivek ",filterTasks)
+  if (filterTasks.length > 1 && id) {
+    // console.log( "hi vivek ",filterTasks ,id)
   }
-useEffect(() => {
-  if (projects.length > 0) {
-    const selected = projects.find(p => p._id === id.id);
-    setProjectFilter(selected || {});
-  }
-}, [projects, id]);
-useEffect(() => {
-  if (tasks.length > 0) {
-    const selected = tasks.filter(t => t.project._id === id.id);
-    setFilterTasks(selected || []);
-  }
-}, [tasks, id]);
+  useEffect(() => {
+    if (projects.length > 0) {
+      const selected = projects.find(p => p._id === id.id);
+      setProjectFilter(selected || {});
+    }
+  }, [projects, id]);
+  useEffect(() => {
+    if (tasks.length > 0) {
+      const selected = tasks.filter(t => t.project._id === id.id);
+      setFilterTasks(selected || []);
+    }
+  }, [tasks, id]);
 
   useEffect(() => {
     CRUD("get", `${url}/tasks`).then((res) => {
@@ -86,7 +86,10 @@ useEffect(() => {
         </div>
 
         {/* Sort and Filter Bar */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <div style={{ width:"81vw", display: 'flex', justifyContent:"space-between" , alignItems: 'center', marginBottom: '20px' }}>
+          <div>
+
+          
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span style={{ fontSize: '14px', color: '#666', fontWeight: '500' }}>Sort by:</span>
             <button style={{
@@ -142,6 +145,10 @@ useEffect(() => {
               Oldest First
             </button>
           </div>
+          </div>
+          <div>
+            
+         
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             <select
               value={filterStatus}
@@ -174,6 +181,7 @@ useEffect(() => {
               + New Task
             </button>
           </div>
+           </div>
         </div>
 
         {/* Tasks Table */}
@@ -283,9 +291,10 @@ useEffect(() => {
               </div>
 
               {/* More Options */}
-              <div style={{ textAlign: 'center', fontSize: '16px', color: '#999', cursor: 'pointer' }}>
-                +
-              </div>
+              <div style={{ textAlign: 'center', fontSize: '16px', color: '#4e4c4cff', cursor: 'pointer' }}>
+                
+                           
+                           →   </div>
             </div>
           ))}
         </div>
