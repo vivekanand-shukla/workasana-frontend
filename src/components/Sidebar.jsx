@@ -62,7 +62,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/reports"     style={({ isActive }) => ({
+          <NavLink to="/report"     style={({ isActive }) => ({
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
