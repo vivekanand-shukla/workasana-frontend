@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react'
 import useCRUD from '../customHooks/useCrud'
 import { Url } from "../customHooks/useMainUrl"
 import Sidebar from '../components/Sidebar'
-
+import { useParams , useNavigate  } from 'react-router-dom'
 const TsakDetail = () => {
   const { url } = Url()
   const { CRUD, loading, error } = useCRUD();
   const [task, setTask] = useState(null);
+  const{ id }= useParams()
+const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch task details - replace with actual task ID from route params
-    CRUD("get", `${url}/tasks`).then((res) => {
+    CRUD("get", `${url}/tasks/${id}`).then((res) => {
       // Get first task as example
-      if (res?.tasks && res.tasks.length > 0) {
-        setTask(res.tasks[0]);
+      if (res?.task ) {
+        setTask(res.task);
       }
     });
   }, [url]);
@@ -40,174 +42,198 @@ const TsakDetail = () => {
     );
   }
 
+
+  const Label = ({ text }) => (
+  <label
+    style={{
+      fontSize: '13px',
+      color: '#666',
+      fontWeight: '600',
+      marginBottom: '8px',
+      display: 'block'
+    }}
+  >
+    {text.toUpperCase()}
+  </label>
+);
+
+const Detail = ({ label, value }) => (
+  <div style={{ marginBottom: '25px' }}>
+    <Label text={label} />
+    <div style={{ fontSize: '15px', fontWeight: '500' }}>
+      {value || '—'}
+    </div>
+  </div>
+);
+
+
+console.log(task._id)
+const markAsComplete = async () => {
+  if (task.status === 'Completed') return;
+  const res = await CRUD(
+    "post",
+    `${url}/tasks/${task._id}`,
+    { status: "Completed" , timeToComplete:0 }
+  );
+
+  if (res?.task) {
+    setTask(res.task); 
+  }
+};
+
+
+
   return (
-    <div className='d-inline-flex'>
-      <Sidebar />
+  <div style={{ display: 'flex' }}>
+    <Sidebar />
 
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%', padding: '30px 40px' }}>
-        {/* Back Button */}
-        <button style={{
-          padding: '8px 16px',
-          border: '1px solid #e0e0e0',
-          backgroundColor: '#fff',
-          borderRadius: '6px',
-          fontSize: '13px',
-          cursor: 'pointer',
-          color: '#666',
-          marginBottom: '25px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px'
-        }}>
-          ← Back to Project
+    {/* MAIN CONTENT */}
+    <div style={{ width: '100%' }}>
+      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', padding: '25px 35px' }}>
+
+        {/* BACK */}
+        
+        <button
+          onClick={() => navigate(-1)}
+          style={{
+            padding: '6px 14px',
+            border: '1px solid #e0e0e0',
+            backgroundColor: '#fff',
+            borderRadius: '5px',
+            fontSize: '13px',
+            cursor: 'pointer',
+            color: '#666',
+            marginBottom: '25px'
+          }}
+        >
+          ← Back to previous page
         </button>
-
-        {/* Task Header */}
+          <h2 className='py-3'>Task Details </h2>
+        {/* HEADER */}
         <div style={{ marginBottom: '35px' }}>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', color: '#000', marginBottom: '10px' }}>
+          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '8px' }}>
             {task.name}
           </h1>
+
+          <span
+            style={{
+              padding: '4px 12px',
+              ...getStatusStyle(task.status),
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontWeight: '600'
+            }}
+          >
+            {task.status}
+          </span>
         </div>
 
-        {/* Task Details Card */}
-        <div style={{
-          backgroundColor: '#fff',
-          border: '1px solid #e8e8e8',
-          borderRadius: '10px',
-          padding: '30px',
-          maxWidth: '800px'
-        }}>
-          {/* Project */}
-          <div style={{ marginBottom: '25px' }}>
-            <label style={{ fontSize: '13px', color: '#666', fontWeight: '600', marginBottom: '8px', display: 'block' }}>
-              PROJECT
-            </label>
-            <div style={{ fontSize: '15px', color: '#000', fontWeight: '500' }}>
-              {task.project?.name || 'No Project'}
-            </div>
-          </div>
+        {/* DETAILS GRID */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '40px',
+            maxWidth: '1100px'
+          }}
+        >
+          {/* LEFT */}
+          <div>
+            <Detail label="Project" value={task.project?.name} />
+            <Detail label="Team" value={task.team?.name} />
 
-          {/* Team */}
-          <div style={{ marginBottom: '25px' }}>
-            <label style={{ fontSize: '13px', color: '#666', fontWeight: '600', marginBottom: '8px', display: 'block' }}>
-              TEAM
-            </label>
-            <div style={{ fontSize: '15px', color: '#000', fontWeight: '500' }}>
-              {task.team?.name || 'No Team'}
-            </div>
-          </div>
-
-          {/* Owners */}
-          <div style={{ marginBottom: '25px' }}>
-            <label style={{ fontSize: '13px', color: '#666', fontWeight: '600', marginBottom: '8px', display: 'block' }}>
-              OWNERS
-            </label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-              {task.owners?.map((owner, i) => (
-                <div key={owner._id} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                    backgroundColor: avatarColors[i % avatarColors.length],
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#fff',
-                    fontSize: '12px',
-                    fontWeight: '600'
-                  }}>
-                    {getInitials(owner.name)}
+            <div style={{ marginBottom: '25px' }}>
+              <Label text="Owners" />
+              <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                {task.owners?.map((owner, i) => (
+                  <div key={owner._id} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '50%',
+                        backgroundColor: avatarColors[i % avatarColors.length],
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#fff',
+                        fontSize: '12px',
+                        fontWeight: '600'
+                      }}
+                    >
+                      {getInitials(owner.name)}
+                    </div>
+                    <span style={{ fontSize: '14px', fontWeight: '500' }}>
+                      {owner.name}
+                    </span>
                   </div>
-                  <span style={{ fontSize: '14px', color: '#000', fontWeight: '500' }}>
-                    {owner.name}
+                ))}
+              </div>
+            </div>
+
+            <div style={{ marginBottom: '25px' }}>
+              <Label text="Tags" />
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {task.tags?.map((tag, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      padding: '6px 14px',
+                      backgroundColor: '#F0F0F0',
+                      borderRadius: '20px',
+                      fontSize: '13px',
+                      color: '#666'
+                    }}
+                  >
+                    {tag}
                   </span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Tags */}
-          <div style={{ marginBottom: '25px' }}>
-            <label style={{ fontSize: '13px', color: '#666', fontWeight: '600', marginBottom: '8px', display: 'block' }}>
-              TAGS
-            </label>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              {task.tags?.map((tag, i) => (
-                <span key={i} style={{
-                  padding: '6px 14px',
-                  backgroundColor: '#F0F0F0',
-                  color: '#666',
-                  borderRadius: '20px',
-                  fontSize: '13px',
-                  fontWeight: '500'
-                }}>
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Due Date */}
-          <div style={{ marginBottom: '25px' }}>
-            <label style={{ fontSize: '13px', color: '#666', fontWeight: '600', marginBottom: '8px', display: 'block' }}>
-              DUE DATE
-            </label>
-            <div style={{ fontSize: '15px', color: '#000', fontWeight: '500' }}>
-              {new Date(task.createdAt).toLocaleDateString('en-US', { 
-                day: 'numeric', 
-                month: 'long', 
-                year: 'numeric' 
+          {/* RIGHT */}
+          <div>
+            <Detail
+              label="Due Date"
+              value={new Date(task.createdAt).toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
               })}
-            </div>
-          </div>
+            />
 
-          {/* Status */}
-          <div style={{ marginBottom: '25px' }}>
-            <label style={{ fontSize: '13px', color: '#666', fontWeight: '600', marginBottom: '8px', display: 'block' }}>
-              STATUS
-            </label>
-            <span style={{
-              display: 'inline-block',
-              padding: '6px 16px',
-              ...getStatusStyle(task.status),
-              borderRadius: '6px',
-              fontSize: '13px',
-              fontWeight: '600'
-            }}>
-              {task.status}
-            </span>
-          </div>
+            <Detail
+              label="Time Remaining"
+              value={`${task.timeToComplete} days`}
+            />
 
-          {/* Time Remaining */}
-          <div style={{ marginBottom: '30px' }}>
-            <label style={{ fontSize: '13px', color: '#666', fontWeight: '600', marginBottom: '8px', display: 'block' }}>
-              TIME REMAINING
-            </label>
-            <div style={{ fontSize: '15px', color: '#000', fontWeight: '500' }}>
-              {task.timeToComplete} days
-            </div>
-          </div>
+            <button
+  onClick={markAsComplete}
+  disabled={task.status === 'Completed'}
+  style={{
+    marginTop: '30px',
+    padding: '12px 24px',
+    backgroundColor: task.status === 'Completed' ? '#E6F7ED' : '#4169E1',
+    color: task.status === 'Completed' ? '#0D7A3D' : '#fff',
+    border: 'none',
+    borderRadius: '6px',
+    fontSize: '14px',
+    fontWeight: '600',
+    cursor: task.status === 'Completed' ? 'default' : 'pointer',
+    opacity: task.status === 'Completed' ? 0.8 : 1
+  }}
+>
+  {task.status === 'Completed' ? '✓ Completed' : 'Mark as Complete'}
+</button>
 
-          {/* Mark as Complete Button */}
-          <button style={{
-            padding: '12px 24px',
-            backgroundColor: task.status === 'Completed' ? '#E6F7ED' : '#4169E1',
-            color: task.status === 'Completed' ? '#0D7A3D' : 'white',
-            border: 'none',
-            borderRadius: '6px',
-            fontSize: '14px',
-            fontWeight: '600',
-            cursor: 'pointer',
-            width: '100%',
-            maxWidth: '250px'
-          }}>
-            {task.status === 'Completed' ? '✓ Completed' : 'Mark as Complete'}
-          </button>
+          </div>
         </div>
       </div>
     </div>
-  )
+  </div>
+);
+
 }
 
 export default TsakDetail

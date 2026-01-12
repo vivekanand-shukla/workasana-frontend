@@ -3,6 +3,9 @@ import useCRUD from '../customHooks/useCrud'
 import { Url } from "../customHooks/useMainUrl"
 import Sidebar from '../components/Sidebar'
 import { useParams } from 'react-router-dom'
+import { useUserContext } from "../Context/UserContext";
+import AddNewTask from '../components/AddNewTask'
+import { Link } from 'react-router-dom'
 const ProjectManage = () => {
   const id = useParams()
   const { url } = Url()
@@ -13,17 +16,29 @@ const ProjectManage = () => {
   const [filterStatus, setFilterStatus] = useState('All');
   const [projectsFilter, setProjectFilter] = useState({})
   const [filterTasks, setFilterTasks] = useState([])
+ const priorityOrder = {
+  Low: 1,
+  Medium: 2,
+  High: 3
+};
+  const  {  setProectLink, showTaskModal, setShowTaskModal } = useUserContext();
 
 
-  if (tasks.length > 0) {
-    console.log("hi vivek ", tasks)
+   useEffect(() => {
+  if (id?.id) {
+    setProectLink(id.id);
   }
-  if (projectsFilter) {
-    console.log(projectsFilter)
-  }
-  if (filterTasks.length > 1 && id) {
-    // console.log( "hi vivek ",filterTasks ,id)
-  }
+}, [id.id]);
+
+  // if (tasks.length > 0) {
+  //   console.log("hi vivek ", tasks)
+  // }
+  // if (projectsFilter) {
+  //   console.log(projectsFilter)
+  // }
+  // if (filterTasks.length > 1 && id) {
+  //   console.log( "hi vivek ",filterTasks ,id)
+  // }
   useEffect(() => {
     if (projects.length > 0) {
       const selected = projects.find(p => p._id === id.id);
@@ -69,6 +84,34 @@ const ProjectManage = () => {
   };
 
   const filteredTasks = filterStatus === 'All' ? filterTasks : filterTasks.filter(t => t.status === filterStatus);
+
+
+
+  const sortedTasks = [...filteredTasks].sort((a, b) => {
+  if (sortBy === 'Priority Low-High') {
+    return priorityOrder[a.priority] - priorityOrder[b.priority];
+  }
+
+  if (sortBy === 'Priority High-Low') {
+    return priorityOrder[b.priority] - priorityOrder[a.priority];
+  }
+
+  if (sortBy === 'Newest First') {
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  }
+
+  if (sortBy === 'Oldest First') {
+    return new Date(a.createdAt) - new Date(b.createdAt);
+  }
+
+  return 0; 
+});
+
+
+useEffect(() => {
+  console.log("TASKS UPDATED", tasks);
+}, [tasks]);
+
 
   return (
     <div className='d-inline-flex'>
@@ -164,11 +207,13 @@ const ProjectManage = () => {
               }}
             >
               <option value="All">Filter</option>
-              <option value="All">All</option>
-              <option value="Completed">Completed</option>
-              <option value="In Progress">In Progress</option>
+                    <option value="All">All</option>
+                    <option value="To Do">To Do</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Blocked">Blocked</option>
             </select>
-            <button style={{
+            <button onClick={()=>{setShowTaskModal(true)}} style={{
               padding: '8px 18px',
               backgroundColor: '#4169E1',
               color: 'white',
@@ -207,7 +252,7 @@ const ProjectManage = () => {
           </div>
 
           {/* Table Rows */}
-          {filteredTasks?.map((task, index) => (
+          {sortedTasks?.map((task, index) => (
             <div
               key={task._id}
               style={{
@@ -291,13 +336,14 @@ const ProjectManage = () => {
               </div>
 
               {/* More Options */}
-              <div style={{ textAlign: 'center', fontSize: '16px', color: '#4e4c4cff', cursor: 'pointer' }}>
+              <Link to={`/TsakDetail/${task._id}`} style={{ textAlign: 'center', fontSize: '16px', color: '#4e4c4cff', cursor: 'pointer' , textDecoration:"none" }}>
                 
-                           
-                           →   </div>
+                     →        
+                           </Link>
             </div>
           ))}
         </div>
+        {showTaskModal && <AddNewTask setTasks={setTasks}/>}
       </div>
     </div>
   )

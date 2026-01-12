@@ -13,7 +13,7 @@ import Team from './pages/Team.jsx'
 import axios from "axios";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import { UserContext } from './Context/UserContext.jsx';
-
+import SingleTeam from './pages/SingleTeam.jsx'
 
 
 const PublicRoute = ({ children }) => {
@@ -106,7 +106,7 @@ const routes = createBrowserRouter([
   },
 
   {
-    path: "/TsakDetail",
+    path: "/TsakDetail/:id",
     element: (
       <ProtectedRoute>
         <TsakDetail />
@@ -139,15 +139,28 @@ const routes = createBrowserRouter([
         <Team />
       </ProtectedRoute>
     )
-  }
+  },
+  {
+    path: "/team/:id",
+    element: (
+      <ProtectedRoute>
+        < SingleTeam />
+      </ProtectedRoute>
+    )
+  },
 ]);
 
 
 const ContextWrapper = ({ children }) => {
   const [open, setOpen] = useState(false); // sidebar open/close
+  const [proectLink, setProectLink] = useState("")
+    const [showProjectModal, setShowProjectModal] = useState(false);
+      const [showTaskModal, setShowTaskModal] = useState(false);
+      const [showTeamModal, setShowTeamModal] = useState(false);
+      const [showMemberModal, setShowMemberModal] = useState(false);
 
   return (
-    <UserContext.Provider value={{ open, setOpen }}>
+    <UserContext.Provider value={{ showMemberModal, setShowMemberModal,  open, setOpen ,proectLink ,setProectLink  , showProjectModal, setShowProjectModal , showTaskModal, setShowTaskModal , showTeamModal , setShowTeamModal }}>
       {children}
     </UserContext.Provider>
   );

@@ -4,9 +4,10 @@ import { NavLink } from 'react-router-dom';
 import { MdDashboard, MdFolder, MdPeople, MdBarChart, MdSettings } from 'react-icons/md';
 import { useUserContext } from "../Context/UserContext";
 import OpenCloseSidebar from './OpenCloseSidebar';
-const Sidebar = () => {
 
-  const { open, setOpen } = useUserContext();
+const Sidebar = () => {
+    
+  const { open, proectLink   } = useUserContext();
   return (
     <div  className={`sidebar ${open ? "open" : "closed"}`}   style={{ width: '220px', height: '100vh', backgroundColor: '#f5f5ff', padding: '24px 16px'  , display:"inline-block"}}   >
          <div style={{position:"absolute", top:"5vh", left:"92vw"}}>
@@ -19,7 +20,7 @@ const Sidebar = () => {
 
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
         <li>
-          <NavLink to="/" style={({ isActive }) => ({
+          <NavLink to="/"      style={({ isActive }) => ({
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
@@ -33,7 +34,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/projectmanage" style={({ isActive }) => ({
+          <NavLink to={`/projectmanage/${proectLink}`}     style={({ isActive }) => ({
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
@@ -47,7 +48,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/team" style={({ isActive }) => ({
+          <NavLink to="/team"     style={({ isActive }) => ({
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
@@ -61,7 +62,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/reports" style={({ isActive }) => ({
+          <NavLink to="/reports"     style={({ isActive }) => ({
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
@@ -75,7 +76,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/setting" style={({ isActive }) => ({
+          <NavLink to="/setting"     style={({ isActive }) => ({
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
