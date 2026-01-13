@@ -30,9 +30,9 @@ const navigate = useNavigate();
         const api = `${url}/auth/login`;
 
         const response = await CRUD("POST", api, form);
-              console.log(error)
+              console.log("hi ",error)
         if (response) {
-            console.log(response)
+            console.log("ha",response)
             localStorage.setItem("token", response.jwtToken);
             alert("Login Successful!");
               navigate("/", { replace: true });
