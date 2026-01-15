@@ -6,17 +6,21 @@ import { Url } from "../customHooks/useMainUrl";
 import AddMemberToTeam from "../components/AddMemberToTeam"
 const avatarColors = ["#FFB347", "#4EC9B0", "#FF6B9D", "#9B59B6", "#3498DB"];
 import { useUserContext } from "../Context/UserContext";
-const getInitials = (name) =>
-  name
-    .split(" ")
-    .map((n) => n[0])
+const getInitials = (name) => {
+  if (!name || typeof name !== "string") return "";
+  return name
+    .trim()
+    .split(/\s+/)
+    .map(n => n[0])
     .join("")
     .toUpperCase();
+};
 
 const SingleTeam = () => {
 
-     const {showMemberModal, setShowMemberModal} = useUserContext();
+  const { showMemberModal, setShowMemberModal } = useUserContext();
   const { id } = useParams();
+
   const navigate = useNavigate();
   const { url } = Url();
   const { CRUD } = useCRUD();
@@ -30,6 +34,35 @@ const SingleTeam = () => {
   }, [id, url]);
 
   if (!team) return null;
+
+
+
+
+
+  const deleteMember = async (userId) => {
+
+
+    const confirmDelete = window.confirm(
+            "Are you sure? This will delete the member from the team."
+        );
+
+        if (!confirmDelete) return;
+    try {
+      const res = await CRUD(
+        "delete",
+        `${url}/teams/${id}/members/${userId}`
+      );
+
+      if (res?.team) {
+        setTeam(res.team);
+
+      }
+    } catch (error) {
+      console.error("Failed to delete member", error);
+      alert("Error deleting member");
+    }
+  };
+
 
   return (
     <div style={{ display: "flex" }}>
@@ -82,13 +115,24 @@ const SingleTeam = () => {
               </div>
 
               <span>{user.name}</span>
+
+              <button onClick={() => deleteMember(user._id)} style={{
+                padding: '6px 16px',
+                border: '1px solid #DC3545',
+                backgroundColor: '#fff',
+                borderRadius: '4px',
+                fontSize: '13px',
+                color: '#DC3545',
+                cursor: 'pointer',
+                marginLeft: '8px'
+              }}>deletete user</button>
             </div>
           ))}
         </div>
 
         {/* Add Member Button */}
-        <button onClick={()=>{
-         setShowMemberModal(true)
+        <button onClick={() => {
+          setShowMemberModal(true)
         }}
           style={{
             marginTop: "20px",
@@ -104,7 +148,7 @@ const SingleTeam = () => {
         >
           + Member
         </button>
-      { showMemberModal && <AddMemberToTeam/>}
+        {showMemberModal && <AddMemberToTeam setTeam={setTeam} teamId={id} />}
       </div>
     </div>
   );

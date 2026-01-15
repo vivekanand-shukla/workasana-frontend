@@ -6,16 +6,24 @@ import CreateTeam from '../components/CreateTem';
 import { useUserContext } from "../Context/UserContext";
 import { Link } from 'react-router-dom';
 const avatarColors = ['#FFB347', '#4EC9B0', '#FF6B9D', '#9B59B6', '#3498DB'];
-
 const getInitials = (name) => {
-  return name.split(' ').map((n) => n[0]).join('').toUpperCase();
+  if (!name || typeof name !== "string") return "A";
+  return name
+    .trim()
+    .split(/\s+/)
+    .map(n => n[0])
+    .join("")
+    .toUpperCase();
 };
 
 const TeamPage = () => {
   const { url } = Url();
   const { CRUD, loading, error } = useCRUD();
   const [teams, setTeams] = useState([]);
-
+  if(teams.length>0){
+     console.log(teams)
+  }
+  console.log(teams)
   useEffect(() => {
     CRUD('get', `${url}/teams`).then((res) => {
       if (res?.teams) {
@@ -97,21 +105,22 @@ const TeamPage = () => {
 
                 {/* Users assigned to this team */}
                 <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                  {team.users?.map((user, i) => (
+                  {team.members?.map((user, i) => (
                     <div
                       key={user._id}
-                      style={{
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '50%',
-                        backgroundColor: avatarColors[i % avatarColors.length],
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#fff',
-                        fontSize: '12px',
-                        fontWeight: '600'
-                      }}
+                     style={{
+                          width: '30px',
+                          height: '30px',
+                          borderRadius: '50%',
+                          backgroundColor: avatarColors[i % avatarColors.length],
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          color: '#fff',
+                          fontSize: '11px',
+                          border: '2px solid #fff',
+                          marginLeft: i > 0 ? "-12px" : 0
+                        }}
                       title={user.name}
                     >
                       {getInitials(user.name)}

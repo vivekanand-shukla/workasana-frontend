@@ -14,7 +14,7 @@ import axios from "axios";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import { UserContext } from './Context/UserContext.jsx';
 import SingleTeam from './pages/SingleTeam.jsx'
-
+import Settings from './pages/Settings.jsx'
 
 const PublicRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -148,6 +148,14 @@ const routes = createBrowserRouter([
       </ProtectedRoute>
     )
   },
+  {
+    path: "/settings",
+    element: (
+      <ProtectedRoute>
+        < Settings />
+      </ProtectedRoute>
+    )
+  },
 ]);
 
 
@@ -158,9 +166,10 @@ const ContextWrapper = ({ children }) => {
       const [showTaskModal, setShowTaskModal] = useState(false);
       const [showTeamModal, setShowTeamModal] = useState(false);
       const [showMemberModal, setShowMemberModal] = useState(false);
+      const [LoginInfo, setLoginInfo] = useState({});
 
   return (
-    <UserContext.Provider value={{ showMemberModal, setShowMemberModal,  open, setOpen ,proectLink ,setProectLink  , showProjectModal, setShowProjectModal , showTaskModal, setShowTaskModal , showTeamModal , setShowTeamModal }}>
+    <UserContext.Provider value={{ setLoginInfo , LoginInfo , showMemberModal, setShowMemberModal,  open, setOpen ,proectLink ,setProectLink  , showProjectModal, setShowProjectModal , showTaskModal, setShowTaskModal , showTeamModal , setShowTeamModal }}>
       {children}
     </UserContext.Provider>
   );

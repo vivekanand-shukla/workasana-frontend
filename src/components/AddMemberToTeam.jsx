@@ -14,13 +14,19 @@ const AddMember = ({ teamId, setTeam }) => {
     const fetchUsers = async () => {
       try {
         const res = await CRUD("get", `${url}/auth/alluser`);
-        if (res?.users) setAllUsers(res.users);
+        if (res?.users) {
+          console.log("hi", res?.users)
+          setAllUsers(res.users);}
+
       } catch (error) {
         console.error("Failed to fetch users", error);
       }
     };
     fetchUsers();
-  }, [url, CRUD]);
+  }, [url]);
+
+
+
 
   const addMember = async (e) => {
     e.preventDefault();
@@ -29,7 +35,6 @@ const AddMember = ({ teamId, setTeam }) => {
       alert("Please select a member");
       return;
     }
-
     try {
       // First, get the current team data
       const teamRes = await CRUD("get", `${url}/teams/${teamId}`);
@@ -54,7 +59,7 @@ const AddMember = ({ teamId, setTeam }) => {
         
         if (res?.team) {
           setTeam(res.team);
-          setShowModal(false);
+          setShowMemberModal(false);
           setSelectedMember("");
           alert("Member added successfully");
         } else {

@@ -66,8 +66,16 @@ CRUD("get", `${url}/projects`).then((res) => {
     if (status === 'Blocked') return { backgroundColor: '#E6F3FF', color: '#e94d4dff' };
     return { backgroundColor: '#F0F0F0', color: '#666' };
   };
+const getInitials = (name) => {
+  if (!name || typeof name !== "string") return "A";
+  return name
+    .trim()
+    .split(/\s+/)
+    .map(n => n[0])
+    .join("")
+    .toUpperCase();
+};
 
-  const getInitials = (name) => name.split(' ').map(n => n[0]).join('').toUpperCase();
   const avatarColors = ['#FFB347', '#4EC9B0', '#FF6B9D', '#9B59B6', '#3498DB'];
 
   const filteredTasks = taskFilter === 'All' ? tasks : tasks.filter(t => t.status === taskFilter);

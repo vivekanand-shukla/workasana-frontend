@@ -9,7 +9,8 @@ const Sidebar = () => {
     
   const { open, proectLink   } = useUserContext();
   return (
-    <div  className={`sidebar ${open ? "open" : "closed"}`}   style={{ width: '220px', height: '100vh', backgroundColor: '#f5f5ff', padding: '24px 16px'  , display:"inline-block"}}   >
+    <div className='a' style={{ width: '220px', height: '100vh'}}>
+    <div  className={`sidebar ${open ? "open" : "closed"}`}   style={{  backgroundColor: '#f5f5ff', padding: '24px 16px'  , display:"inline-block"}}   >
          <div style={{position:"absolute", top:"5vh", left:"92vw"}}>
            <OpenCloseSidebar/>
           
@@ -76,7 +77,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/setting"     style={({ isActive }) => ({
+          <NavLink to="/settings"     style={({ isActive }) => ({
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
@@ -90,6 +91,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
       </ul>
+    </div>
     </div>
   );
 };

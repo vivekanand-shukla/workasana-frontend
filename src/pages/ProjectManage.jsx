@@ -16,6 +16,7 @@ const ProjectManage = () => {
   const [filterStatus, setFilterStatus] = useState('All');
   const [projectsFilter, setProjectFilter] = useState({})
   const [filterTasks, setFilterTasks] = useState([])
+  const [owners, setOwners] = useState([])
  const priorityOrder = {
   Low: 1,
   Medium: 2,
@@ -33,9 +34,9 @@ const ProjectManage = () => {
   // if (tasks.length > 0) {
   //   console.log("hi vivek ", tasks)
   // }
-  // if (projectsFilter) {
-  //   console.log(projectsFilter)
-  // }
+  if (owners.length>0) {
+    console.log(owners)
+  }
   // if (filterTasks.length > 1 && id) {
   //   console.log( "hi vivek ",filterTasks ,id)
   // }
@@ -47,7 +48,17 @@ const ProjectManage = () => {
   }, [projects, id]);
   useEffect(() => {
     if (tasks.length > 0) {
-      const selected = tasks.filter(t => t.project._id === id.id);
+
+
+      const selected = tasks.filter(t =>
+  (typeof t.project === "string" && t.project === id.id) ||
+  (t.project?._id === id.id)
+);
+
+
+
+
+
       setFilterTasks(selected || []);
     }
   }, [tasks, id]);
@@ -63,11 +74,21 @@ const ProjectManage = () => {
       setProjects(res?.projects || []);
     });
   }, [url]);
+  useEffect(() => {
+    CRUD("get", `${url}/auth/alluser`).then((res) => {
+      setOwners(res?.users || []);
+    });
+  }, [url]);
 
-  const getInitials = (name) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
-  };
-
+const getInitials = (name) => {
+  if (!name || typeof name !== "string") return "A";
+  return name
+    .trim()
+    .split(/\s+/)
+    .map(n => n[0])
+    .join("")
+    .toUpperCase();
+};
   const avatarColors = ['#FFB347', '#4EC9B0', '#FF6B9D', '#9B59B6', '#3498DB'];
 
   const getPriorityStyle = (priority) => {
@@ -83,9 +104,9 @@ const ProjectManage = () => {
     return { backgroundColor: '#F5F5F5', color: '#666' };
   };
 
-  const filteredTasks = filterStatus === 'All' ? filterTasks : filterTasks.filter(t => t.status === filterStatus);
+  const filteredTasks = filterStatus === 'All' ? filterTasks : filterTasks.filter(t => t.owners.find(f => f._id === filterStatus ) );
 
-
+console.log(filteredTasks)
 
   const sortedTasks = [...filteredTasks].sort((a, b) => {
   if (sortBy === 'Priority Low-High') {
@@ -208,10 +229,9 @@ useEffect(() => {
             >
               <option value="All">Filter</option>
                     <option value="All">All</option>
-                    <option value="To Do">To Do</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Blocked">Blocked</option>
+             { owners && owners?.map(i =><option value={`${i?._id}`}>{i?.name}</option> )}
+                    
+                   
             </select>
             <button onClick={()=>{setShowTaskModal(true)}} style={{
               padding: '8px 18px',
@@ -273,33 +293,31 @@ useEffect(() => {
               </div>
 
               {/* Owner */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ display: 'flex', marginTop: '10px' }}>
                 {task.owners?.slice(0, 3).map((owner, i) => (
-                  <div
-                    key={owner._id}
-                    style={{
-                      width: '28px',
-                      height: '28px',
-                      borderRadius: '50%',
-                      backgroundColor: avatarColors[i % avatarColors.length],
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#fff',
-                      fontSize: '10px',
-                      fontWeight: '600',
-                      border: '2px solid #fff',
-                      marginLeft: i > 0 ? '-10px' : '0'
-                    }}
-                  >
-                    {getInitials(owner.name)}
-                  </div>
+                  <div key={owner._id} style={{
+                          width: '30px',
+                          height: '30px',
+                          borderRadius: '50%',
+                          backgroundColor: avatarColors[i % avatarColors.length],
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          color: '#fff',
+                          fontSize: '11px',
+                          border: '2px solid #fff',
+                          marginLeft: i > 0 ? "-12px" : 0
+                        }}>
+                          {getInitials(owner.name)}
+
+
+                        </div>
                 ))}
-                {task.owners?.length === 1 && (
+                {/* {task.owners?.length === 1 && (
                   <span style={{ fontSize: '13px', color: '#666' }}>
                     {task.owners[0].name}
                   </span>
-                )}
+                )} */}
               </div>
 
               {/* Priority */}
@@ -312,7 +330,7 @@ useEffect(() => {
                   fontSize: '11px',
                   fontWeight: '600'
                 }}>
-                  {task.priority || 'Medium'}
+                  {task.priority }
                 </span>
               </div>
 

@@ -2,18 +2,34 @@
 .openClose {
   display: none;  
 }
+  /* Base sidebar */
+.sidebar , .sidebar.open {
+  position: fixed  ;
 
 
-@media (max-width: 768px) {
+ width: 200px ; height: 100vh ;
+
+
+
+}
+
+
+
+@media (max-width: 775px) {
   .openClose {
     display: flex; 
     align-items: center;
     justify-content: center;
   }
 
+  .a{
+    width: 0px !important;
+    height: 0px !important;
+  }
 
   /* Base sidebar */
 .sidebar {
+  position: fixed  !important;
   width: 99.5vw !important;
   height: 100vh;
  

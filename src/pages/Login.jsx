@@ -6,6 +6,7 @@ import { useNavigate , Link } from "react-router-dom"
 
 
 const Login = () => {
+
    const { url } = Url();
     const { CRUD, loading, error } = useCRUD();
 const navigate = useNavigate();
@@ -33,6 +34,7 @@ const navigate = useNavigate();
               console.log("hi ",error)
         if (response) {
             console.log("ha",response)
+        
             localStorage.setItem("token", response.jwtToken);
             alert("Login Successful!");
               navigate("/", { replace: true });
