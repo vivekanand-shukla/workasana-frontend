@@ -6,6 +6,7 @@ import { Url } from "../customHooks/useMainUrl";
 import AddMemberToTeam from "../components/AddMemberToTeam"
 const avatarColors = ["#FFB347", "#4EC9B0", "#FF6B9D", "#9B59B6", "#3498DB"];
 import { useUserContext } from "../Context/UserContext";
+import OpenCloseSidebar from "../components/OpenCloseSidebar";
 const getInitials = (name) => {
   if (!name || typeof name !== "string") return "";
   return name
@@ -69,7 +70,10 @@ const SingleTeam = () => {
       <Sidebar />
 
       <div style={{ width: "100%", padding: "30px 40px" }}>
+
         {/* Back */}
+        <div className="d-flex justify-content-between align-items-center">
+
         <div
           onClick={() => navigate("/team")}
           style={{
@@ -78,9 +82,11 @@ const SingleTeam = () => {
             fontSize: "14px",
             marginBottom: "20px",
           }}
-        >
+          >
           ← Back to Teams
         </div>
+        <OpenCloseSidebar/>
+          </div>
 
         {/* Team Name */}
         <h2 style={{ marginBottom: "20px" }}>{team.name}</h2>
@@ -93,9 +99,10 @@ const SingleTeam = () => {
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           {team.members.map((user, i) => (
             <div
-              key={user._id}
-              style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              key={user._id} className="ab"
+              style={{ display: "flex", alignItems: "center", justifyContent:"space-between",   width:"30%"}}
             >
+              
               <div
                 style={{
                   width: "32px",
@@ -114,6 +121,7 @@ const SingleTeam = () => {
                 {getInitials(user.name)}
               </div>
 
+
               <span>{user.name}</span>
 
               <button onClick={() => deleteMember(user._id)} style={{
@@ -127,6 +135,7 @@ const SingleTeam = () => {
                 marginLeft: '8px'
               }}>deletete user</button>
             </div>
+              
           ))}
         </div>
 
@@ -150,6 +159,26 @@ const SingleTeam = () => {
         </button>
         {showMemberModal && <AddMemberToTeam setTeam={setTeam} teamId={id} />}
       </div>
+
+      <style>
+{`
+
+@media (max-width: 800px) {
+  .ab {
+    width: 40% !important;
+  
+  }
+}
+
+
+@media (max-width: 500px) {
+  .ab {
+    width: 100% !important;
+  
+  }
+}
+`}
+</style>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useCRUD from '../customHooks/useCrud'
 import { Url } from "../customHooks/useMainUrl"
 import Sidebar from '../components/Sidebar'
+import OpenCloseSidebar from '../components/OpenCloseSidebar'
 import { useParams , useNavigate  } from 'react-router-dom'
 const TsakDetail = () => {
   const { url } = Url()
@@ -92,7 +93,8 @@ const markAsComplete = async () => {
       <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', padding: '25px 35px' }}>
 
         {/* BACK */}
-        
+        <div className='d-flex align-items-center justify-content-between'>
+
         <button
           onClick={() => navigate(-1)}
           style={{
@@ -105,9 +107,11 @@ const markAsComplete = async () => {
             color: '#666',
             marginBottom: '25px'
           }}
-        >
+          >
           ← Back to previous page
         </button>
+        <OpenCloseSidebar/>
+          </div>
           <h2 className='py-3'>Task Details </h2>
         {/* HEADER */}
         <div style={{ marginBottom: '35px' }}>

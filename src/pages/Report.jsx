@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 import { Url } from "../customHooks/useMainUrl";
 import useCRUD from "../customHooks/useCrud";
 import { useNavigate } from "react-router-dom";
-
+import OpenCloseSidebar from "../components/OpenCloseSidebar";
 const cardStyle = {
   background: "#fff",
   borderRadius: "8px",
@@ -80,14 +80,17 @@ setWeeklyChart({
       <Sidebar />
 
       <div style={{ width: "100%", padding: "30px 40px", background: "#f9fafb" }}>
+        <div className="d-flex justify-content-between align-items-center"> 
+
         {/* Header */}
         <div
           style={{ color: "#4169E1", cursor: "pointer", marginBottom: "10px" }}
           onClick={() => navigate("/")}
-        >
+          >
           ← Back to Dashboard
         </div>
-
+        <OpenCloseSidebar/>
+          </div>
         <h2 style={{ marginBottom: "20px" }}>Reports Overview</h2>
 
         {/* Last Week */}
@@ -217,6 +220,29 @@ setWeeklyChart({
   }
 }
 
+
+/* Small Mobile - 400px and below */
+@media (max-width: 800px) {
+  .report-card {
+    width: 90vw;
+  }
+
+  .report-card h4 {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .report-chart {
+    height: 170px;
+  }
+}
+@media (max-width: 400px) {
+  .report-card {
+    width: 70vw;
+  }
+
+
+}
           `
         }
       </style>

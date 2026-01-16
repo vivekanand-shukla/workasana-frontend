@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Sidebar from '../components/Sidebar'
 import { Url } from '../customHooks/useMainUrl'
 import useCRUD from '../customHooks/useCrud'
+import OpenCloseSidebar from '../components/OpenCloseSidebar'
 
 const Settings = () => {
   const { url } = Url()
@@ -35,12 +36,29 @@ const Settings = () => {
     CRUD("get", `${url}/teams`).then((res) => setTeams(res?.teams || []));
   }, [url]);
 
+  const taskProjectIds = tasks
+  ?.map(task => task?.project?._id)
+  .filter(Boolean); 
+  const taskTeamIds = tasks
+  ?.map(task => task?.team?._id)
+  .filter(Boolean); 
+
+console.log("hip hip hure",taskTeamIds)
+
   const handleDeleteAccount = async () => {
     const confirmDelete = window.confirm(
       "Are you sure? This will permanently delete your account."
     );
     if (!confirmDelete) return;
+    const isUserusedonTeam = teams?.filter(t=>  t?.members?.find(f=> f._id === logInInfo?._id )).length
+    const isUserusedontask = tasks?.filter(t=> t?.owners?.find(f=>  f._id === logInInfo?._id)).length
+       if( isUserusedontask >0 && isUserusedonTeam >0){
 
+         alert(`user used somewhere  delete that first`)
+            return
+       }else if ( isUserusedontask ===0 && isUserusedonTeam ===0){
+
+       
     const token = localStorage.getItem("token");
     await fetch(`${url}/auth/delete-account`, {
       method: "DELETE",
@@ -51,6 +69,8 @@ const Settings = () => {
       localStorage.removeItem("token");
       window.location.href = "/signup";
     }, 3000)
+
+  }
   };
 
   const handleLogout = () => {
@@ -67,36 +87,56 @@ const Settings = () => {
 
   const handleDeleteProject = async (id) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
-      await CRUD("delete", `${url}/projects/${id}`);
-      setProjects(projects.filter(p => p._id !== id));
+
+      if(taskProjectIds.includes(id)){
+        alert("project is used in task so not able to delete")
+        return 
+      }else{
+
+        await CRUD("delete", `${url}/projects/${id}`);
+        setProjects(projects.filter(p => p._id !== id));
+      }
     }
   };
 
   const handleDeleteTeam = async (id) => {
   if (window.confirm('Are you sure you want to delete this team?')) {
-    await CRUD("delete", `${url}/teams/${id}`);
+     if(taskTeamIds.includes(id)){
+        alert("team is used in task so not able to delete")
+        return 
+      }else{
+
+
+           await CRUD("delete", `${url}/teams/${id}`);
     setTeams(teams.filter(t => t._id !== id));
+      }
+
+ 
   }
 };
+console.log(tasks)
 
   const getInitials = (name) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
+    <div style={{ display: 'flex', minHeight: '150vh' }}>
       <Sidebar />
-      <div style={{ flex: 1, padding: '32px' }}>
+      <div style={{ flex: 1, padding: '16px', maxWidth: '100%', overflow: 'hidden' }}>
+        <div className='d-flex align-item-center justify-content-between' style={{ flexWrap: 'wrap', gap: '12px' }}>
         <h1 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '32px', color: '#1a1a1a' }}>
           Settings
         </h1>
 
+         <OpenCloseSidebar/>
+        </div>
         {/* Tab Navigation */}
         <div style={{ display: 'flex', borderBottom: '1px solid #e0e0e0', marginBottom: '32px', overflowX: 'auto' }}>
           <button
             onClick={() => setActiveTab('profile')}
             style={{
-              padding: '12px 24px',
+              padding: '12px 16px',
               border: 'none',
               backgroundColor: 'transparent',
               borderBottom: activeTab === 'profile' ? '3px solid #4169E1' : '3px solid transparent',
@@ -112,7 +152,7 @@ const Settings = () => {
           <button
             onClick={() => setActiveTab('tasks')}
             style={{
-              padding: '12px 24px',
+              padding: '12px 16px',
               border: 'none',
               backgroundColor: 'transparent',
               borderBottom: activeTab === 'tasks' ? '3px solid #4169E1' : '3px solid transparent',
@@ -128,7 +168,7 @@ const Settings = () => {
           <button
             onClick={() => setActiveTab('projects')}
             style={{
-              padding: '12px 24px',
+              padding: '12px 16px',
               border: 'none',
               backgroundColor: 'transparent',
               borderBottom: activeTab === 'projects' ? '3px solid #4169E1' : '3px solid transparent',
@@ -144,7 +184,7 @@ const Settings = () => {
           <button
             onClick={() => setActiveTab('teams')}
             style={{
-              padding: '12px 24px',
+              padding: '12px 16px',
               border: 'none',
               backgroundColor: 'transparent',
               borderBottom: activeTab === 'teams' ? '3px solid #4169E1' : '3px solid transparent',
@@ -161,11 +201,11 @@ const Settings = () => {
 
         {/* Profile Section */}
         {activeTab === 'profile' && (
-          <div style={{ backgroundColor: 'white', padding: '32px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+          <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
             <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '24px', color: '#1a1a1a' }}>
               Profile Information
             </h2>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '32px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
               <div style={{
                 width: '80px',
                 height: '80px',
@@ -177,15 +217,15 @@ const Settings = () => {
                 fontSize: '24px',
                 fontWeight: '700',
                 color: 'white',
-                marginRight: '24px'
+                flexShrink: 0
               }}>
                 {logInInfo && getInitials(logInInfo?.name)}
               </div>
-              <div>
-                <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '4px', color: '#1a1a1a' }}>
+              <div style={{ minWidth: 0 }}>
+                <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '4px', color: '#1a1a1a', wordBreak: 'break-word' }}>
                   {logInInfo?.name}
                 </h3>
-                <p style={{ fontSize: '14px', color: '#666', margin: 0 }}>{logInInfo?.email}</p>
+                <p style={{ fontSize: '14px', color: '#666', margin: 0, wordBreak: 'break-all' }}>{logInInfo?.email}</p>
               </div>
             </div>
             <div style={{ marginBottom: '20px' }}>
@@ -202,7 +242,8 @@ const Settings = () => {
                   border: '1px solid #ddd',
                   borderRadius: '4px',
                   fontSize: '14px',
-                  backgroundColor: '#f8f9fa'
+                  backgroundColor: '#f8f9fa',
+                  boxSizing: 'border-box'
                 }}
               />
             </div>
@@ -220,7 +261,8 @@ const Settings = () => {
                   border: '1px solid #ddd',
                   borderRadius: '4px',
                   fontSize: '14px',
-                  backgroundColor: '#f8f9fa'
+                  backgroundColor: '#f8f9fa',
+                  boxSizing: 'border-box'
                 }}
               />
             </div>
@@ -235,7 +277,9 @@ const Settings = () => {
                   fontSize: '14px',
                   fontWeight: '600',
                   color: '#4169E1',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  flex: '1 1 auto',
+                  minWidth: '120px'
                 }}
               >
                 Logout
@@ -250,7 +294,9 @@ const Settings = () => {
                   fontSize: '14px',
                   fontWeight: '600',
                   color: 'white',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  flex: '1 1 auto',
+                  minWidth: '120px'
                 }}
               >
                 Delete Account
@@ -261,24 +307,34 @@ const Settings = () => {
 
         {/* Tasks Section */}
         {activeTab === 'tasks' && (
-          <div style={{ backgroundColor: 'white', padding: '32px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+          <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
             <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '24px', color: '#1a1a1a' }}>
               Manage Tasks
             </h2>
             <div className="list-group">
+            <div className='row' style={{ margin: '0 -8px' }}>
               {tasks?.map((task, index) => (
-                <div key={index} className="list-group-item">
+                <div className='col-md-6 col-12' key={index} style={{ padding: '0 8px', marginBottom: '16px' }}>
+                <div className="list-group-item" style={{ height: '100%' }}>
                   <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#999', marginBottom: '4px' }}>TASK NAME</div>
-                    <div style={{ fontSize: '14px', color: '#1a1a1a', fontWeight: '500' }}>{task.name}</div>
+                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#1a1a1a', marginBottom: '4px' }}>TASK NAME</div>
+                    <div style={{ fontSize: '14px', color: '#1a1a1a', fontWeight: '500', wordBreak: 'break-word' }}>{task.name}</div>
                   </div>
                   <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#999', marginBottom: '4px' }}>PROJECT</div>
-                    <div style={{ fontSize: '14px', color: '#666' }}>{task.project?.name}</div>
+                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#1a1a1a', marginBottom: '4px' }}>PROJECT</div>
+                    <div style={{ fontSize: '14px', color: '#1a1a1a', wordBreak: 'break-word' }}>{task.project?.name}</div>
                   </div>
                   <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#999', marginBottom: '4px' }}>STATUS</div>
-                    <div style={{ fontSize: '14px', color: '#666' }}>{task.status}</div>
+                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#1a1a1a', marginBottom: '4px' }}>STATUS</div>
+                    <div style={{ fontSize: '14px', color: '#1a1a1a' }}>{task.status}</div>
+                  </div>
+                  <div style={{ marginBottom: '12px' }}>
+                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#1a1a1a', marginBottom: '4px' }}>TEAM</div>
+                    <div style={{ fontSize: '14px', color: '#1a1a1a', wordBreak: 'break-word' }}>{task?.team?.name}</div>
+                  </div>
+                  <div style={{ marginBottom: '12px' }}>
+                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#1a1a1a', marginBottom: '4px' }}>OWNERS</div>
+                    <div style={{ fontSize: '14px', color: '#1a1a1a', wordBreak: 'break-word' }}>{task?.owners?.map(o => o?.name).join(" ")}</div>
                   </div>
                   <div>
                     <button
@@ -298,27 +354,31 @@ const Settings = () => {
                     </button>
                   </div>
                 </div>
+                </div>
               ))}
+            </div>
             </div>
           </div>
         )}
 
         {/* Projects Section */}
         {activeTab === 'projects' && (
-          <div style={{ backgroundColor: 'white', padding: '32px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+          <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
             <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '24px', color: '#1a1a1a' }}>
               Manage Projects
             </h2>
             <div className="list-group">
+                <div className='row' style={{ margin: '0 -8px' }}>
               {projects?.map((project, index) => (
-                <div key={index} className="list-group-item">
+                  <div className='col-md-6 col-12' key={index} style={{ padding: '0 8px', marginBottom: '16px' }}>
+                <div className="list-group-item" style={{ height: '100%' }}>
                   <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#999', marginBottom: '4px' }}>PROJECT NAME</div>
-                    <div style={{ fontSize: '14px', color: '#1a1a1a', fontWeight: '500' }}>{project.name}</div>
+                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#1a1a1a', marginBottom: '4px' }}>PROJECT NAME</div>
+                    <div style={{ fontSize: '14px', color: '#1a1a1a', fontWeight: '500', wordBreak: 'break-word' }}>{project.name}</div>
                   </div>
                   <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#999', marginBottom: '4px' }}>DESCRIPTION</div>
-                    <div style={{ fontSize: '14px', color: '#666' }}>{project.description}</div>
+                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#1a1a1a', marginBottom: '4px' }}>DESCRIPTION</div>
+                    <div style={{ fontSize: '14px', color: '#1a1a1a', wordBreak: 'break-word' }}>{project.description}</div>
                   </div>
                   <div>
                     <button
@@ -338,31 +398,36 @@ const Settings = () => {
                     </button>
                   </div>
                 </div>
+                </div>
               ))}
+              </div>
             </div>
           </div>
         )}
 
         {/* Teams Section */}
         {activeTab === 'teams' && (
-          <div style={{ backgroundColor: 'white', padding: '32px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+          <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
             <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '24px', color: '#1a1a1a' }}>
               Manage Teams
             </h2>
             <div className="list-group">
+                <div className='row' style={{ margin: '0 -8px' }}>
               {teams?.map((team, index) => (
-                <div key={index} className="list-group-item">
+                  <div className='col-md-6 col-12' key={index} style={{ padding: '0 8px', marginBottom: '16px' }}>
+                <div className="list-group-item" style={{ height: '100%' }}>
                   <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#999', marginBottom: '4px' }}>TEAM NAME</div>
-                    <div style={{ fontSize: '14px', color: '#1a1a1a', fontWeight: '500' }}>{team.name}</div>
+                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#1a1a1a', marginBottom: '4px' }}>TEAM NAME</div>
+                    <div style={{ fontSize: '14px', color: '#1a1a1a', fontWeight: '500', wordBreak: 'break-word' }}>{team.name}</div>
                   </div>
                   <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#999', marginBottom: '4px' }}>DESCRIPTION</div>
-                    <div style={{ fontSize: '14px', color: '#666' }}>{team.description}</div>
+                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#1a1a1a', marginBottom: '4px' }}>DESCRIPTION</div>
+                    <div style={{ fontSize: '14px', color: '#1a1a1a', wordBreak: 'break-word' }}>{team.description}</div>
                   </div>
                   <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#999', marginBottom: '4px' }}>MEMBERS</div>
-                    <div style={{ fontSize: '14px', color: '#666' }}>{team.members?.length || 0} members</div>
+                    <div style={{ fontSize: '11px', fontWeight: '600', color: '#1a1a1a', marginBottom: '4px' }}>MEMBERS</div>
+                    <div style={{ fontSize: '14px', color: '#1a1a1a' }}>{team.members?.length || 0} members</div>
+                    <div style={{ fontSize: '14px', color: '#1a1a1a', wordBreak: 'break-word' }}>{team.members?.map(m => m?.name).join("   ") } </div>
                   </div>
                   <div>
                     <button
@@ -382,7 +447,9 @@ const Settings = () => {
                     </button>
                   </div>
                 </div>
+                </div>
               ))}
+            </div>
             </div>
           </div>
         )}

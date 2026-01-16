@@ -8,7 +8,7 @@ import Signup from './pages/Signup.jsx'
 import ProjectManage from './pages/ProjectManage.jsx'
 import TsakDetail from './pages/TsakDetail.jsx'
 import Report from './pages/Report.jsx'
-import TeamManage from './pages/TeamManage.jsx'
+
 import Team from './pages/Team.jsx'
 import axios from "axios";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
@@ -123,14 +123,7 @@ const routes = createBrowserRouter([
     )
   },
 
-  {
-    path: "/teammanagement",
-    element: (
-      <ProtectedRoute>
-        <TeamManage />
-      </ProtectedRoute>
-    )
-  },
+
 
   {
     path: "/team",
