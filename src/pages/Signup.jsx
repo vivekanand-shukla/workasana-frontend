@@ -4,21 +4,22 @@ import { Url } from "../customHooks/useMainUrl"
 import useCRUD from '../customHooks/useCrud'
 import { Link } from 'react-router-dom'
 import { useNavigate  } from "react-router-dom"
+import { toast } from "react-toastify";
 const Signup = () => {
    const navigate = useNavigate();
 
-    // url → Url/auth/signup
+
     const { url } = Url();
     const { CRUD, loading, error } = useCRUD();
 
-    // State values
+
     const [form, setForm] = useState({
         name: "",
         email: "",
         password: "",
     });
 
-    // Handle Input Change
+
     const handleChange = (e) => {
         setForm({
             ...form,
@@ -26,7 +27,7 @@ const Signup = () => {
         });
     };
 
-    // Handle Signup Submit
+
     const handleSignup = async (e) => {
         e.preventDefault()
 
@@ -34,11 +35,13 @@ const Signup = () => {
 
         const response = await CRUD("POST", api, form);
 
-        if (response) {
-            alert("Signup successful!");
+        if (response?.success === true) {
+            // console.log(response)
+            toast.success("Signup successful!");
               navigate("/login", { replace: true });
-        } else {
-            alert(error || "Signup failed");
+        }
+         else {
+            toast.error( "Signup failed ");
         }
     };
 
@@ -53,7 +56,7 @@ const Signup = () => {
                 <div className='d-flex flex-column gap-3' style={{ width: "100%" }}>
                     <div>
                         <label htmlFor="name" className='d-block' style={{ marginBottom: "6px", fontSize: "14px", fontWeight: "500", color: "#374151" }}>Name</label>
-                        <input
+                        <input  required
                             type="name"
                             id='name'
                             placeholder='Enter your name'
@@ -72,6 +75,7 @@ const Signup = () => {
                     <div>
                         <label htmlFor="email" className='d-block' style={{ marginBottom: "6px", fontSize: "14px", fontWeight: "500", color: "#374151" }}>Email</label>
                         <input
+                        required
                             type="email"
                             id='email'
                             placeholder='Enter your email'
@@ -90,6 +94,7 @@ const Signup = () => {
                     <div>
                         <label htmlFor="password" className='d-block' style={{ marginBottom: "6px", fontSize: "14px", fontWeight: "500", color: "#374151" }}>Password</label>
                         <input
+                        required
                             type="password"
                             id='password'
                             placeholder='Password'
@@ -111,8 +116,8 @@ const Signup = () => {
                         style={{
                             width: "100%",
                             padding: "10px",
-                            // backgroundColor: "#4f46e5",
-                            backgroundColor: "rgb(31 88 187)",
+                          
+                            backgroundColor: "#4f46e5",
                             color: "white",
                             border: "none",
                             borderRadius: "6px",

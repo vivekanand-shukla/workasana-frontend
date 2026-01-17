@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import useCRUD from "../customHooks/useCrud";
 import { Url } from '../customHooks/useMainUrl';
 import { useUserContext } from "../Context/UserContext";
+import { toast } from "react-toastify";
 const AddNewProject = ({  setProjects }) => {
   const { url } = Url();
   const { CRUD } = useCRUD();
@@ -28,13 +29,13 @@ const AddNewProject = ({  setProjects }) => {
         setProjects(prev => [...prev, res.project]);
         setShowProjectModal(false); 
         setNewProject({ name: "", description: "", status: "To Do" }); 
-        alert("Project created successfully");
+        toast.success("Project created successfully");
       } else {
-        alert("Error creating project");
+        toast.error("Error creating project");
       }
     } catch (error) {
       console.error(error);
-      alert("Server error while creating project");
+      toast.error("Server error while creating project");
     }
   };
 

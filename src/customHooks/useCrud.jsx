@@ -1,4 +1,4 @@
-// useCRUD.js Bearer
+
 import { useState } from "react";
 import axios from "axios";
 
@@ -15,8 +15,8 @@ const useCRUD = () => {
       }})
       .then(res => res.data)
       .catch(err => {
-        setError(err.response?.data?.message || err.message);
-        return null;
+        setError(err?.response?.data?.message || err.message);
+        return err?.response;
       })
       .finally(() => setLoading(false));
   };

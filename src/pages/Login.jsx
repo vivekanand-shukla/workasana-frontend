@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Url } from "../customHooks/useMainUrl"
 import useCRUD from '../customHooks/useCrud'
 import { useNavigate , Link } from "react-router-dom"
+import { toast } from "react-toastify";
 
 
 
@@ -11,36 +12,39 @@ const Login = () => {
     const { CRUD, loading, error } = useCRUD();
 const navigate = useNavigate();
 
-    // Form State
+
     const [form, setForm] = useState({
         email: "",
         password: ""
     });
 
-    // Handle input change
+
     const handleChange = (e) => {
         setForm({
             ...form,
             [e.target.id]: e.target.value
         });
     };
-    // Handle Login Submit
+
     const handleLogin = async (e) => {
         e.preventDefault();
 
         const api = `${url}/auth/login`;
 
         const response = await CRUD("POST", api, form);
-              console.log("hi ",error)
-        if (response) {
-            console.log("ha",response)
-        
-            localStorage.setItem("token", response.jwtToken);
-            alert("Login Successful!");
+         
+        if ( response?.success === true) {
+         
+            localStorage.setItem("token", response?.jwtToken);
+            toast.success("Login Successful!");
               navigate("/", { replace: true });
-        } else {
-            alert(error || "Login failed");
-        }
+        } 
+
+  if (response?.data?.success === false) {
+    toast.error(response?.data?.message);
+    return;
+  }
+
     };
     return (
         <div className='d-flex justify-content-center align-items-center' style={{ height: "100vh", backgroundColor: "#f8f9fa", padding: "20px" }}>
@@ -89,8 +93,8 @@ const navigate = useNavigate();
                         style={{
                             width: "100%",
                             padding: "10px",
-                            // backgroundColor: "#4f46e5",
-                            backgroundColor: "rgb(31 88 187)",
+                  
+                              backgroundColor: "#4f46e5",
                             color: "white",
                             border: "none",
                             borderRadius: "6px",

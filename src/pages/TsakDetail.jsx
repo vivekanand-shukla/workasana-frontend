@@ -4,6 +4,7 @@ import { Url } from "../customHooks/useMainUrl"
 import Sidebar from '../components/Sidebar'
 import OpenCloseSidebar from '../components/OpenCloseSidebar'
 import { useParams , useNavigate  } from 'react-router-dom'
+
 const TsakDetail = () => {
   const { url } = Url()
   const { CRUD, loading, error } = useCRUD();
@@ -12,9 +13,9 @@ const TsakDetail = () => {
 const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch task details - replace with actual task ID from route params
+
     CRUD("get", `${url}/tasks/${id}`).then((res) => {
-      // Get first task as example
+      
       if (res?.task ) {
         setTask(res.task);
       }
@@ -38,7 +39,7 @@ const navigate = useNavigate();
     return (
       <div className='d-inline-flex'>
         <Sidebar />
-        <div style={{ padding: '40px', width: '100%' }}>Loading...</div>
+        <div style={{ padding: '40px', width: '100%' }}></div>
       </div>
     );
   }
@@ -68,7 +69,7 @@ const Detail = ({ label, value }) => (
 );
 
 
-console.log(task._id)
+
 const markAsComplete = async () => {
   if (task.status === 'Completed') return;
   const res = await CRUD(

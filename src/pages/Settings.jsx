@@ -3,7 +3,7 @@ import Sidebar from '../components/Sidebar'
 import { Url } from '../customHooks/useMainUrl'
 import useCRUD from '../customHooks/useCrud'
 import OpenCloseSidebar from '../components/OpenCloseSidebar'
-
+import { toast } from "react-toastify";
 const Settings = () => {
   const { url } = Url()
   const { CRUD, loading, error } = useCRUD();
@@ -24,7 +24,7 @@ const Settings = () => {
   }, []);
 
   const [logInInfo, setLoginInfo] = useState()
-  console.log("setting", logInInfo)
+
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const [teams, setTeams] = useState([]);
@@ -43,7 +43,7 @@ const Settings = () => {
   ?.map(task => task?.team?._id)
   .filter(Boolean); 
 
-console.log("hip hip hure",taskTeamIds)
+
 
   const handleDeleteAccount = async () => {
     const confirmDelete = window.confirm(
@@ -54,7 +54,7 @@ console.log("hip hip hure",taskTeamIds)
     const isUserusedontask = tasks?.filter(t=> t?.owners?.find(f=>  f._id === logInInfo?._id)).length
        if( isUserusedontask >0 && isUserusedonTeam >0){
 
-         alert(`user used somewhere  delete that first`)
+          toast.warning(`user used somewhere  delete that first`)
             return
        }else if ( isUserusedontask ===0 && isUserusedonTeam ===0){
 
@@ -64,7 +64,7 @@ console.log("hip hip hure",taskTeamIds)
       method: "DELETE",
       headers: { Authorization: token }
     });
-    alert("your account has bened delated successfully!")
+    toast.success("your account has bened delated successfully!")
     setTimeout(() => {
       localStorage.removeItem("token");
       window.location.href = "/signup";
@@ -75,13 +75,16 @@ console.log("hip hip hure",taskTeamIds)
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('setProectLink');
     window.location.href = '/login';
+     toast.success("Logout successfully")
   };
 
   const handleDeleteTask = async (id) => {
     if (window.confirm('Are you sure you want to delete this task?')) {
       await CRUD("delete", `${url}/tasks/${id}`);
       setTasks(tasks.filter(t => t._id !== id));
+       toast.success("deleted successfully")
     }
   };
 
@@ -89,12 +92,13 @@ console.log("hip hip hure",taskTeamIds)
     if (window.confirm('Are you sure you want to delete this project?')) {
 
       if(taskProjectIds.includes(id)){
-        alert("project is used in task so not able to delete")
+         toast.warning("project is used in task so not able to delete")
         return 
       }else{
 
         await CRUD("delete", `${url}/projects/${id}`);
         setProjects(projects.filter(p => p._id !== id));
+        toast.success("deleted successfully")
       }
     }
   };
@@ -102,19 +106,20 @@ console.log("hip hip hure",taskTeamIds)
   const handleDeleteTeam = async (id) => {
   if (window.confirm('Are you sure you want to delete this team?')) {
      if(taskTeamIds.includes(id)){
-        alert("team is used in task so not able to delete")
+         toast.warning("team is used in task so not able to delete")
         return 
       }else{
 
 
            await CRUD("delete", `${url}/teams/${id}`);
     setTeams(teams.filter(t => t._id !== id));
+       toast.success("deleted successfully")
       }
 
  
   }
 };
-console.log(tasks)
+
 
   const getInitials = (name) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();

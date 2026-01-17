@@ -1,7 +1,7 @@
 import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-
+import { ToastContainer } from "react-toastify";
 import App from './App.jsx'
 import Login from './pages/Login.jsx'
 import Signup from './pages/Signup.jsx'
@@ -34,14 +34,14 @@ const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    // No token at all → directly block
+   
     if (!token) {
       setChecking(false);
       setValid(false);
       return;
     }
 
-    // Verify token with backend
+
     axios.get("http://localhost:3000/ensureAuthenticated", {
       headers: {
         Authorization: `${token}`,
@@ -61,12 +61,11 @@ const ProtectedRoute = ({ children }) => {
 
   if (checking) return null; 
 
-  // Token invalid or missing
+
   if (!valid) {
     return <Navigate to="/login" replace />;
   }
 
-  // Token valid → allow access
   return children;
 };
 const routes = createBrowserRouter([
@@ -153,7 +152,7 @@ const routes = createBrowserRouter([
 
 
 const ContextWrapper = ({ children }) => {
-  const [open, setOpen] = useState(false); // sidebar open/close
+  const [open, setOpen] = useState(false); 
   const [proectLink, setProectLink] = useState("")
     const [showProjectModal, setShowProjectModal] = useState(false);
       const [showTaskModal, setShowTaskModal] = useState(false);
@@ -171,6 +170,7 @@ const ContextWrapper = ({ children }) => {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
      <ContextWrapper>
+          <ToastContainer />
       <RouterProvider router={routes}  />
     </ContextWrapper>
   </StrictMode>

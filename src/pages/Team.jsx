@@ -6,6 +6,7 @@ import CreateTeam from '../components/CreateTem';
 import { useUserContext } from "../Context/UserContext";
 import { Link } from 'react-router-dom';
 import OpenCloseSidebar from '../components/OpenCloseSidebar';
+
 const avatarColors = ['#FFB347', '#4EC9B0', '#FF6B9D', '#9B59B6', '#3498DB'];
 const getInitials = (name) => {
   if (!name || typeof name !== "string") return "A";
@@ -21,10 +22,8 @@ const TeamPage = () => {
   const { url } = Url();
   const { CRUD, loading, error } = useCRUD();
   const [teams, setTeams] = useState([]);
-  if (teams.length > 0) {
-    console.log(teams)
-  }
-  console.log(teams)
+
+
   useEffect(() => {
     CRUD('get', `${url}/teams`).then((res) => {
       if (res?.teams) {
@@ -37,7 +36,7 @@ const TeamPage = () => {
     return (
       <div className="d-inline-flex">
         <Sidebar />
-        <div style={{ padding: '40px', width: '100%' }}>Loading teams...</div>
+        <div style={{ padding: '40px', width: '100%' }}></div>
       </div>
     );
   }
@@ -108,7 +107,7 @@ const TeamPage = () => {
               >
                 <h3 style={{ fontSize: '16px', fontWeight: '600', margin: 0 }}>{team.name}</h3>
 
-                {/* Users assigned to this team */}
+             
                 <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                   {team.members?.map((user, i) => (
                     <div

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useCRUD from "../customHooks/useCrud";
 import { Url } from '../customHooks/useMainUrl';
 import { useUserContext } from "../Context/UserContext";
+import { toast } from "react-toastify";
 const AddNewTask = ({setTasks}) => {
   const { url } = Url();
   const { CRUD } = useCRUD();
@@ -60,11 +61,11 @@ const AddNewTask = ({setTasks}) => {
     const res = await CRUD("post", `${url}/tasks`, taskPayload);
 
     if (res?.savedTask) {
-      alert("success");
+      toast.error("success");
        setTasks(prev => [...prev, res.savedTask]);
       setShowTaskModal(false);
     } else {
-      alert("error");
+      toast.success("error");
     }
   };
 

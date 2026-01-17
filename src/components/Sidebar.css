@@ -2,7 +2,7 @@
 .openClose {
   display: none;  
 }
-  /* Base sidebar */
+
 .sidebar , .sidebar.open {
   position: fixed  ;
 
@@ -27,7 +27,6 @@
     height: 0px !important;
   }
 
-  /* Base sidebar */
 .sidebar {
   position: fixed  !important;
   width: 99.5vw !important;
@@ -41,12 +40,11 @@
   z-index: 1000;
 }
 
-/* CLOSED state (hidden) */
 .sidebar.closed {
   transform: translateX(-100%);
 }
 
-/* OPEN state (visible) */
+
 .sidebar.open {
   transform: translateX(0);
 }

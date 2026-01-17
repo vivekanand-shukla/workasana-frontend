@@ -8,6 +8,10 @@ import OpenCloseSidebar from './OpenCloseSidebar';
 const Sidebar = () => {
     
   const { open, proectLink   } = useUserContext();
+
+
+  const projectId =proectLink || localStorage.getItem("setProectLink");
+
   return (
     <div className='a' style={{ width: '220px', height: '100vh'}}>
     <div  className={`sidebar ${open ? "open" : "closed"}`}   style={{  backgroundColor: '#f5f5ff', padding: '24px 16px'  , display:"inline-block"}}   >
@@ -35,7 +39,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to={`/projectmanage/${proectLink}`}     style={({ isActive }) => ({
+          <NavLink  to={projectId ? `/projectmanage/${projectId}` : "/"}   style={({ isActive }) => ({
             display: 'flex',
             alignItems: 'center',
             gap: '10px',

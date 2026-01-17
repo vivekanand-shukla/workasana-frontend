@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useCRUD from "../customHooks/useCrud";
 import { Url } from '../customHooks/useMainUrl';
 import { useUserContext } from "../Context/UserContext";
+import { toast } from "react-toastify";
 const AddMember = ({ teamId, setTeam }) => {
   const { url } = Url();
   const { CRUD } = useCRUD();
@@ -9,13 +10,12 @@ const AddMember = ({ teamId, setTeam }) => {
   const [selectedMember, setSelectedMember] = useState("");
   const [allUsers, setAllUsers] = useState([]);
 
-  // Fetch all users for dropdown
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const res = await CRUD("get", `${url}/auth/alluser`);
         if (res?.users) {
-          console.log("hi", res?.users)
+       
           setAllUsers(res.users);}
 
       } catch (error) {
@@ -32,23 +32,22 @@ const AddMember = ({ teamId, setTeam }) => {
     e.preventDefault();
 
     if (!selectedMember) {
-      alert("Please select a member");
+      toast.warning("Please select a member");
       return;
     }
     try {
-      // First, get the current team data
+      
       const teamRes = await CRUD("get", `${url}/teams/${teamId}`);
       
       if (teamRes?.team) {
         const currentMembers = teamRes.team.members.map(m => m._id || m);
-        
-        // Check if member already exists
+     
         if (currentMembers.includes(selectedMember)) {
-          alert("Member already exists in the team");
+           toast.warning("Member already exists in the team");
           return;
         }
 
-        // Add new member to the array
+     
         const updatedMembers = [...currentMembers, selectedMember];
 
         const payload = {
@@ -61,14 +60,14 @@ const AddMember = ({ teamId, setTeam }) => {
           setTeam(res.team);
           setShowMemberModal(false);
           setSelectedMember("");
-          alert("Member added successfully");
+           toast.success("Member added successfully");
         } else {
-          alert("Error adding member");
+           toast.error("Error adding member");
         }
       }
     } catch (error) {
       console.error(error);
-      alert("Server error while adding member");
+      toast.error("Server error while adding member");
     }
   };
 

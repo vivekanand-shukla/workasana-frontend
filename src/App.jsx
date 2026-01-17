@@ -11,6 +11,7 @@ import "./App.css"
 import { useUserContext } from "./Context/UserContext";
 import AddNewTask from './components/AddNewTask';
 import AddNewProject from './components/AddNewProject';
+
 function App() {
   const { url } = Url()
   const { CRUD, loading, error } = useCRUD();
@@ -39,13 +40,13 @@ CRUD("get", `${url}/projects`).then((res) => {
 
     // teams
       CRUD("get", `${url}/teams`).then((res) => {
-      console.log(res?.teams[0]) //it is printing
+  
       setTeam(res?.teams || []);
     });
 
     // auth 
      CRUD("get", `${url}/auth/alluser`).then((res) => {
-      // console.log("bla vla",res) //it is printing
+    
       setAllUser(res?.users || []);
     });
 
@@ -94,6 +95,7 @@ const getInitials = (name) => {
 useEffect(() => {
   if (projects.length > 0) {
     setProectLink(projects[0]._id);
+    localStorage.setItem("setProectLink" , projects[0]._id)
   }
 }, [projects]);
 

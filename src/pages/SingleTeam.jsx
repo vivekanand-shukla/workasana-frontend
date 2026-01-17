@@ -7,6 +7,7 @@ import AddMemberToTeam from "../components/AddMemberToTeam"
 const avatarColors = ["#FFB347", "#4EC9B0", "#FF6B9D", "#9B59B6", "#3498DB"];
 import { useUserContext } from "../Context/UserContext";
 import OpenCloseSidebar from "../components/OpenCloseSidebar";
+import { toast } from "react-toastify";
 const getInitials = (name) => {
   if (!name || typeof name !== "string") return "";
   return name
@@ -53,14 +54,14 @@ const SingleTeam = () => {
         "delete",
         `${url}/teams/${id}/members/${userId}`
       );
-
+ toast.success(" deleted member");
       if (res?.team) {
         setTeam(res.team);
 
       }
     } catch (error) {
       console.error("Failed to delete member", error);
-      alert("Error deleting member");
+      toast.error("Error deleting member");
     }
   };
 
@@ -71,7 +72,7 @@ const SingleTeam = () => {
 
       <div style={{ width: "100%", padding: "30px 40px" }}>
 
-        {/* Back */}
+
         <div className="d-flex justify-content-between align-items-center">
 
         <div

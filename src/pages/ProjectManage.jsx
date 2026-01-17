@@ -2,14 +2,26 @@ import React, { useState, useEffect } from 'react'
 import useCRUD from '../customHooks/useCrud'
 import { Url } from "../customHooks/useMainUrl"
 import Sidebar from '../components/Sidebar'
-import { useParams } from 'react-router-dom'
+import { useParams , Navigate  } from 'react-router-dom'
 import { useUserContext } from "../Context/UserContext";
 import AddNewTask from '../components/AddNewTask'
+import OpenCloseSidebar from '../components/OpenCloseSidebar'
 import { Link } from 'react-router-dom'
+import "./ProjectManage.css"
+
+
+
+
+
 const ProjectManage = () => {
   const id = useParams()
   const { url } = Url()
   const { CRUD, loading, error } = useCRUD();
+
+  if (!id || id === 'undefined' || id === 'null') {
+    return <Navigate to="/" replace />;
+  }
+ 
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const [sortBy, setSortBy] = useState('');
@@ -22,6 +34,9 @@ const ProjectManage = () => {
   Medium: 2,
   High: 3
 };
+
+
+
   const  {  setProectLink, showTaskModal, setShowTaskModal } = useUserContext();
 
 
@@ -31,15 +46,8 @@ const ProjectManage = () => {
   }
 }, [id.id]);
 
-  // if (tasks.length > 0) {
-  //   console.log("hi vivek ", tasks)
-  // }
-  if (owners.length>0) {
-    console.log(owners)
-  }
-  // if (filterTasks.length > 1 && id) {
-  //   console.log( "hi vivek ",filterTasks ,id)
-  // }
+
+
   useEffect(() => {
     if (projects.length > 0) {
       const selected = projects.find(p => p._id === id.id);
@@ -106,7 +114,7 @@ const getInitials = (name) => {
 
   const filteredTasks = filterStatus === 'All' ? filterTasks : filterTasks.filter(t => t.owners.find(f => f._id === filterStatus ) );
 
-console.log(filteredTasks)
+
 
   const sortedTasks = [...filteredTasks].sort((a, b) => {
   if (sortBy === 'Priority Low-High') {
@@ -129,34 +137,34 @@ console.log(filteredTasks)
 });
 
 
-useEffect(() => {
-  console.log("TASKS UPDATED", tasks);
-}, [tasks]);
-
 
   return (
-    <div className='d-inline-flex'>
+    <div  className='d-inline-flex a1'>
       <Sidebar />
 
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%', padding: '30px 40px' }}>
+      <div className='a2' style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%', padding: '30px 40px' }}>
         {/* Header */}
-        <div style={{ marginBottom: '25px' }}>
-          <h1 style={{ fontSize: '28px', fontWeight: '600', color: '#000', marginBottom: '8px' }}>
+        <div className='a3' style={{ marginBottom: '25px' }}>
+          <div className='d-flex justify-content-between align-items-center b1 '>
+
+          <h1 className='a4' style={{ fontSize: '28px', fontWeight: '600', color: '#000', marginBottom: '8px' }}>
             {projectsFilter.name}
           </h1>
-          <p style={{ fontSize: '14px', color: '#666', lineHeight: '1.6', margin: 0 }}>
+          <OpenCloseSidebar/>
+          </div>
+          <p className='a5' style={{ fontSize: '14px', color: '#666', lineHeight: '1.6', margin: 0 }}>
             {projectsFilter.description}
           </p>
         </div>
 
         {/* Sort and Filter Bar */}
-        <div style={{ width:"81vw", display: 'flex', justifyContent:"space-between" , alignItems: 'center', marginBottom: '20px' }}>
-          <div>
+        <div className='a6' style={{ width:"81vw", display: 'flex', justifyContent:"space-between" , alignItems: 'center', marginBottom: '20px' }}>
+          <div className='a7'>
 
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '14px', color: '#666', fontWeight: '500' }}>Sort by:</span>
-            <button style={{
+          <div className='a8' style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span className='a9' style={{ fontSize: '14px', color: '#666', fontWeight: '500' }}>Sort by:</span>
+            <button className='a10' style={{
               padding: '6px 14px',
               border: '1px solid #e0e0e0',
               backgroundColor: sortBy === 'Priority Low-High' ? '#F0F0F0' : '#fff',
@@ -169,7 +177,7 @@ useEffect(() => {
             >
               Priority Low-High
             </button>
-            <button style={{
+            <button className='a11' style={{
               padding: '6px 14px',
               border: '1px solid #e0e0e0',
               backgroundColor: sortBy === 'Priority High-Low' ? '#F0F0F0' : '#fff',
@@ -182,7 +190,7 @@ useEffect(() => {
             >
               Priority High-Low
             </button>
-            <button style={{
+            <button className='a12' style={{
               padding: '6px 14px',
               border: '1px solid #e0e0e0',
               backgroundColor: sortBy === 'Newest First' ? '#F0F0F0' : '#fff',
@@ -195,7 +203,7 @@ useEffect(() => {
             >
               Newest First
             </button>
-            <button style={{
+            <button className='a13' style={{
               padding: '6px 14px',
               border: '1px solid #e0e0e0',
               backgroundColor: sortBy === 'Oldest First' ? '#F0F0F0' : '#fff',
@@ -213,8 +221,8 @@ useEffect(() => {
           <div>
             
          
-          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            <select
+          <div className='a14' style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <select className='a15'
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
               style={{
@@ -233,7 +241,7 @@ useEffect(() => {
                     
                    
             </select>
-            <button onClick={()=>{setShowTaskModal(true)}} style={{
+            <button className='a16' onClick={()=>{setShowTaskModal(true)}} style={{
               padding: '8px 18px',
               backgroundColor: '#4169E1',
               color: 'white',
@@ -250,9 +258,9 @@ useEffect(() => {
         </div>
 
         {/* Tasks Table */}
-        <div style={{ backgroundColor: '#fff', border: '1px solid #e8e8e8', borderRadius: '8px', overflow: 'hidden' }}>
+        <div className='a17' style={{ backgroundColor: '#fff', border: '1px solid #e8e8e8', borderRadius: '8px', overflow: 'hidden' }}>
           {/* Table Header */}
-          <div style={{
+          <div className='a18'  style={{
             display: 'grid',
             gridTemplateColumns: '2fr 1.5fr 1fr 1fr 1fr 0.3fr',
             padding: '15px 20px',
@@ -263,17 +271,17 @@ useEffect(() => {
             color: '#666',
             textTransform: 'uppercase'
           }}>
-            <div>TASKS</div>
-            <div>OWNER</div>
-            <div>PRIORITY</div>
-            <div>DUE ON</div>
-            <div>STATUS</div>
-            <div></div>
+            <div className='a19'>TASKS</div>
+            <div className='a20' >OWNER</div>
+            <div className='a21' >PRIORITY</div>
+            <div className='a22'>DUE ON</div>
+            <div className='a23'>STATUS</div>
+         
           </div>
 
           {/* Table Rows */}
           {sortedTasks?.map((task, index) => (
-            <div
+            <div className='a24'
               key={task._id}
               style={{
                 display: 'grid',
@@ -288,14 +296,14 @@ useEffect(() => {
               onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#fff'}
             >
               {/* Task Name */}
-              <div style={{ fontSize: '14px', fontWeight: '500', color: '#000' }}>
+              <div className='a25' style={{ fontSize: '14px', fontWeight: '500', color: '#000' }}>
                 {task.name}
               </div>
 
               {/* Owner */}
-              <div style={{ display: 'flex', marginTop: '10px' }}>
+              <div className='a26' style={{ display: 'flex', marginTop: '10px' }}>
                 {task.owners?.slice(0, 3).map((owner, i) => (
-                  <div key={owner._id} style={{
+                  <div className='a27' key={owner._id} style={{
                           width: '30px',
                           height: '30px',
                           borderRadius: '50%',
@@ -313,15 +321,11 @@ useEffect(() => {
 
                         </div>
                 ))}
-                {/* {task.owners?.length === 1 && (
-                  <span style={{ fontSize: '13px', color: '#666' }}>
-                    {task.owners[0].name}
-                  </span>
-                )} */}
+           
               </div>
 
               {/* Priority */}
-              <div>
+              <div className='a28'>
                 <span style={{
                   display: 'inline-block',
                   padding: '4px 12px',
@@ -335,13 +339,13 @@ useEffect(() => {
               </div>
 
               {/* Due Date */}
-              <div style={{ fontSize: '13px', color: '#666' }}>
+              <div className='a29' style={{ fontSize: '13px', color: '#666' }}>
                 {new Date(task.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
               </div>
 
               {/* Status */}
-              <div>
-                <span style={{
+              <div className='a30'>
+                <span className='a31' style={{
                   display: 'inline-block',
                   padding: '4px 12px',
                   ...getStatusStyle(task.status),
@@ -354,7 +358,7 @@ useEffect(() => {
               </div>
 
               {/* More Options */}
-              <Link to={`/TsakDetail/${task._id}`} style={{ textAlign: 'center', fontSize: '16px', color: '#4e4c4cff', cursor: 'pointer' , textDecoration:"none" }}>
+              <Link className='a32' to={`/TsakDetail/${task._id}`} style={{ textAlign: 'center', fontSize: '16px', color: '#4e4c4cff', cursor: 'pointer' , textDecoration:"none" }}>
                 
                      →        
                            </Link>
@@ -363,6 +367,8 @@ useEffect(() => {
         </div>
         {showTaskModal && <AddNewTask setTasks={setTasks}/>}
       </div>
+
+
     </div>
   )
 }

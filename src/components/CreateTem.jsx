@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useCRUD from "../customHooks/useCrud";
 import { Url } from '../customHooks/useMainUrl';
 import { useUserContext } from "../Context/UserContext";
-
+import { toast } from "react-toastify";
 const CreateTeam = ({ setTeams }) => {
   const { url } = Url();
   const { CRUD } = useCRUD();
@@ -33,12 +33,12 @@ const CreateTeam = ({ setTeams }) => {
     e.preventDefault();
 
     if (!newTeam.name) {
-      alert("Team name is required");
+       toast.warning("Team name is required");
       return;
     }
 
     if (newTeam.members.length === 0) {
-      alert("Select at least one member");
+       toast.warning("Select at least one member");
       return;
     }
 
@@ -54,13 +54,13 @@ const CreateTeam = ({ setTeams }) => {
         setTeams(prev => [...prev, res.team]);
         setShowTeamModal(false);
         setNewTeam({ name: "", description: "", members: [] });
-        alert("Team created successfully");
+        toast.success("Team created successfully");
       } else {
-        alert("Error creating team");
+       toast.error("Error creating team");
       }
     } catch (error) {
       console.error(error);
-      alert("Server error while creating team");
+      toast.error("Server error while creating team");
     }
   };
 

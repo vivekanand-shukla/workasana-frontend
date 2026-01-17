@@ -1,0 +1,593 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+}
+
+
+.a1 {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.a2 {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 30px 40px;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+
+.a3 {
+  margin-bottom: 25px;
+}
+
+.b1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.a4 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+}
+
+.a5 {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+
+.a6 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.a7 {
+  flex: 1;
+}
+
+.a8 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.a9 {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.a10, .a11, .a12, .a13 {
+  padding: 6px 14px;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #666;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.a10:hover, .a11:hover, .a12:hover, .a13:hover {
+  background-color: #f5f5f5;
+}
+
+.a14 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.a15 {
+  padding: 6px 12px;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #666;
+}
+
+.a16 {
+  padding: 8px 18px;
+  background-color: #4169E1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.a16:hover {
+  background-color: #3558c7;
+}
+
+
+.a17 {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.a18 {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 0.3fr;
+  padding: 15px 20px;
+  background-color: #FAFAFA;
+  border-bottom: 1px solid #e8e8e8;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.a24 {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 0.3fr;
+  padding: 18px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.a24:hover {
+  background-color: #F9F9F9;
+}
+
+.a24:last-child {
+  border-bottom: none;
+}
+
+.a25 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+}
+
+.a26 {
+  display: flex;
+  margin-top: 10px;
+}
+
+.a27 {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 11px;
+  border: 2px solid #fff;
+}
+
+.a28 span, .a30 span {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.a29 {
+  font-size: 13px;
+  color: #666;
+}
+
+.a32 {
+  text-align: center;
+  font-size: 16px;
+  color: #4e4c4c;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+
+@media (max-width: 992px) {
+  .a2 {
+    padding: 24px;
+  }
+
+  .a6 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .a7, .a14 {
+    width: 100%;
+  }
+
+  .a8 {
+    width: 100%;
+  }
+
+  .a14 {
+    justify-content: space-between;
+  }
+
+  .a18 {
+    grid-template-columns: 2fr 1.2fr 0.8fr 0.8fr 0.8fr 0.3fr;
+    font-size: 11px;
+  }
+
+  .a24 {
+    grid-template-columns: 2fr 1.2fr 0.8fr 0.8fr 0.8fr 0.3fr;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .a2 {
+    padding: 20px;
+  }
+
+  .a4 {
+    font-size: 24px;
+  }
+
+  .a18 {
+    display: none;
+  }
+
+  .a24 {
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: #fafafa;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border-bottom: none;
+  }
+
+  .a24:hover {
+    background-color: #f5f5f5;
+  }
+
+  .a25 {
+    font-size: 15px;
+    font-weight: 600;
+    width: 100%;
+  }
+
+  .a26 {
+    margin-top: 4px;
+  }
+
+  .a28, .a30 {
+    align-self: flex-start;
+  }
+
+  .a29 {
+    font-size: 12px;
+  }
+
+  .a32 {
+    align-self: flex-end;
+    font-size: 18px;
+    margin-top: 8px;
+  }
+
+
+  .a25::before {
+    content: "Task: ";
+    font-weight: 600;
+    color: #666;
+    font-size: 11px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .a26::before {
+    content: "Owner: ";
+    font-weight: 600;
+    color: #666;
+    font-size: 11px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+    width: 100%;
+  }
+
+  .a28::before {
+    content: "Priority: ";
+    font-weight: 600;
+    color: #666;
+    font-size: 11px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  .a29::before {
+    content: "Due On: ";
+    font-weight: 600;
+    color: #666;
+    font-size: 11px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  .a30::before {
+    content: "Status: ";
+    font-weight: 600;
+    color: #666;
+    font-size: 11px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-right: 8px;
+  }
+}
+
+
+@media (max-width: 576px) {
+  .a1 {
+    flex-direction: column;
+  }
+
+  .a2 {
+    padding: 16px;
+  }
+
+  .a4 {
+    font-size: 20px;
+  }
+
+  .a5 {
+    font-size: 13px;
+  }
+
+  .a8 {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .a9 {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .a10, .a11, .a12, .a13 {
+    width: 100%;
+    text-align: center;
+  }
+
+  .a14 {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .a15, .a16 {
+    width: 100%;
+  }
+
+  .a24 {
+    padding: 14px;
+  }
+}
+
+
+@media (max-width: 425px) {
+  .a2 {
+    padding: 12px;
+  }
+
+  .a4 {
+    font-size: 18px;
+  }
+
+  .b1 {
+    flex-wrap: wrap;
+  }
+
+  .a24 {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .a25 {
+    font-size: 14px;
+  }
+
+  .a27 {
+    width: 26px;
+    height: 26px;
+    font-size: 10px;
+  }
+
+  .a28 span, .a30 span {
+    font-size: 10px;
+    padding: 3px 10px;
+  }
+
+  .a29 {
+    font-size: 11px;
+  }
+}
+
+
+
+@media (max-width: 375px) {
+  .a2 {
+    padding: 10px;
+  }
+
+  .a4 {
+    font-size: 16px;
+  }
+
+  .a5 {
+    font-size: 12px;
+  }
+
+  .a10, .a11, .a12, .a13 {
+    font-size: 11px;
+    padding: 5px 12px;
+  }
+
+  .a16 {
+    font-size: 12px;
+    padding: 7px 16px;
+  }
+}
+
+
+@media (max-width: 1024px) {
+  .a2 {
+    padding: 20px;
+  }
+
+  .a6 {
+    width: 100% !important;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .a7 {
+    width: 100%;
+  }
+
+  .a8 {
+    width: 100%;
+  }
+
+  .a14 {
+    width: 100%;
+    margin-top: 12px;
+  }
+}
+
+
+
+@media (max-width: 788px) {
+  .a18 {
+    display: none !important;;
+  }
+
+  .a24 {
+    display: block !important;
+    padding: 16px;
+    background: #fafafa;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border-bottom: none;
+  }
+
+  .a24:hover {
+    background-color: #f5f5f5;
+  }
+
+  .a25 {
+    font-size: 15px;
+    font-weight: 600;
+    width: 100%;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+
+  .a26 {
+    display: flex;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 12px;
+    gap: 8px;
+  }
+
+  .a26::before {
+    content: "Owner:";
+    font-weight: 600;
+    color: #666;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+
+
+  .a28, .a29, .a30 {
+    display: inline-block;
+    margin-right: 12px;
+    margin-bottom: 8px;
+  }
+
+  .a28::before {
+    content: "Priority: ";
+    font-weight: 600;
+    color: #666;
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-right: 6px;
+  }
+
+  .a29::before {
+    content: "Due: ";
+    font-weight: 600;
+    color: #666;
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-right: 6px;
+  }
+
+  .a30::before {
+    content: "Status: ";
+    font-weight: 600;
+    color: #666;
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-right: 6px;
+  }
+
+  .a29 {
+    font-size: 12px;
+    display: inline-block;
+  }
+
+
+  .a32 {
+    display: block;
+    text-align: right;
+    font-size: 18px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .a27 {
+    width: 28px;
+    height: 28px;
+    font-size: 10px;
+  }
+}

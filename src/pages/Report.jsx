@@ -6,6 +6,7 @@ import { Url } from "../customHooks/useMainUrl";
 import useCRUD from "../customHooks/useCrud";
 import { useNavigate } from "react-router-dom";
 import OpenCloseSidebar from "../components/OpenCloseSidebar";
+
 const cardStyle = {
   background: "#fff",
   borderRadius: "8px",
@@ -38,13 +39,13 @@ export default function Reports() {
     const lw = await CRUD("get", `${url}/report/last-week`);
     const pd = await CRUD("get", `${url}/report/pending`);
     const ct = await CRUD("get", `${url}/report/closed-tasks`);
-  console.log(lw)
+
     setLastWeek(lw?.count || 0);
     setPendingDays(pd?.totalDays || 0);
     setByTeam(ct?.byTeam || {});
     setByOwner(ct?.byOwner || {});
 
-// ---- BAR CHART LOGIC (7 DAYS) ----
+
 const days = [];
 const counts = [];
 
