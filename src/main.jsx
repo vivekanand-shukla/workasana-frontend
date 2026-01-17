@@ -42,7 +42,7 @@ const ProtectedRoute = ({ children }) => {
     }
 
 
-    axios.get("http://localhost:3000/ensureAuthenticated", {
+    axios.get("https://workasana-backend-gold.vercel.app/ensureAuthenticated", {
       headers: {
         Authorization: `${token}`,
       },
