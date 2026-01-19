@@ -92,7 +92,7 @@ const TeamPage = () => {
           >
             {teams.length === 0 && <div>No teams found</div>}
             {teams.map((team) => (
-              <Link to={`/team/${team._id}`}
+              <Link  to={`/team/${team._id}`}
                 key={team._id}
                 style={{
                   backgroundColor: '#f9f9f9',

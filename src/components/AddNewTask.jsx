@@ -61,7 +61,7 @@ const AddNewTask = ({setTasks}) => {
     const res = await CRUD("post", `${url}/tasks`, taskPayload);
 
     if (res?.savedTask) {
-      toast.error("success");
+      toast.success("success");
        setTasks(prev => [...prev, res.savedTask]);
       setShowTaskModal(false);
     } else {

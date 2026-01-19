@@ -15,7 +15,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import { UserContext } from './Context/UserContext.jsx';
 import SingleTeam from './pages/SingleTeam.jsx'
 import Settings from './pages/Settings.jsx'
-
+import { Url } from './customHooks/useMainUrl.jsx';
 const PublicRoute = ({ children }) => {
   const token = localStorage.getItem("token");
 
@@ -40,9 +40,9 @@ const ProtectedRoute = ({ children }) => {
       setValid(false);
       return;
     }
+  const { url } = Url()
 
-
-    axios.get("https://workasana-backend-gold.vercel.app/ensureAuthenticated", {
+    axios.get(`${url}/ensureAuthenticated`, {
       headers: {
         Authorization: `${token}`,
       },

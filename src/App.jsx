@@ -21,6 +21,7 @@ function App() {
   const [projectFilter, setProjectFilter] = useState('All');
 
 
+
   const [searchInput, setSearchInput] = useState("")
   const { setProectLink , showProjectModal, setShowProjectModal , showTaskModal, setShowTaskModal } = useUserContext();
 
@@ -38,17 +39,8 @@ CRUD("get", `${url}/projects`).then((res) => {
       setProjects(res?.projects || []);
     });
 
-    // teams
-      CRUD("get", `${url}/teams`).then((res) => {
-  
-      setTeam(res?.teams || []);
-    });
+ 
 
-    // auth 
-     CRUD("get", `${url}/auth/alluser`).then((res) => {
-    
-      setAllUser(res?.users || []);
-    });
 
   }, [url]);
 

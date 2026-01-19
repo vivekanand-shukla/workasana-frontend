@@ -33,12 +33,12 @@ const CreateTeam = ({ setTeams }) => {
     e.preventDefault();
 
     if (!newTeam.name) {
-       toast.warning("Team name is required");
+      toast.warning("Team name is required");
       return;
     }
 
     if (newTeam.members.length === 0) {
-       toast.warning("Select at least one member");
+      toast.warning("Select at least one member");
       return;
     }
 
@@ -56,7 +56,7 @@ const CreateTeam = ({ setTeams }) => {
         setNewTeam({ name: "", description: "", members: [] });
         toast.success("Team created successfully");
       } else {
-       toast.error("Error creating team");
+        toast.error("Error creating team");
       }
     } catch (error) {
       console.error(error);
@@ -185,17 +185,17 @@ const CreateTeam = ({ setTeams }) => {
                     checked={newTeam.members.includes(user._id)}
                     onChange={(e) => {
                       if (e.target.checked) {
-                       setNewTeam(prev => ({
+                        setNewTeam(prev => ({
                           ...prev,
                           members: [...prev.members, user._id]
                         }));
                       } else {
                         setNewTeam(prev => ({
                           ...prev,
-                          members: [...prev.members, user._id]
+                          members: prev.members.filter(id => id !== user._id)
                         }));
-
                       }
+
                     }}
                     style={{ marginRight: '8px' }}
                   />

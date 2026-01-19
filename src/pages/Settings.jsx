@@ -50,11 +50,12 @@ const Settings = () => {
       "Are you sure? This will permanently delete your account."
     );
     if (!confirmDelete) return;
-    const isUserusedonTeam = teams?.filter(t=>  t?.members?.find(f=> f._id === logInInfo?._id )).length
-    const isUserusedontask = tasks?.filter(t=> t?.owners?.find(f=>  f._id === logInInfo?._id)).length
-       if( isUserusedontask >0 && isUserusedonTeam >0){
+    const isUserusedonTeam = teams?.filter(t=>  t?.members?.find(f=> f?._id?.toString() === logInInfo?._id?.toString() )).length
+    const isUserusedontask = tasks?.filter(t=> t?.owners?.find(f=>  f?._id?.toString() === logInInfo?._id?.toString())).length
+       if( isUserusedontask >0 || isUserusedonTeam >0){
 
-          toast.warning(`user used somewhere  delete that first`)
+        toast.warning("User is used somewhere else. Please delete it there first.");
+
             return
        }else if ( isUserusedontask ===0 && isUserusedonTeam ===0){
 
