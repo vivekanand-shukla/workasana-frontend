@@ -4,7 +4,9 @@ import { Url } from '../customHooks/useMainUrl'
 import useCRUD from '../customHooks/useCrud'
 import OpenCloseSidebar from '../components/OpenCloseSidebar'
 import { toast } from "react-toastify";
+import { useNavigate  } from "react-router-dom"
 const Settings = () => {
+  const navigate = useNavigate();
   const { url } = Url()
   const { CRUD, loading, error } = useCRUD();
 
@@ -66,11 +68,9 @@ const Settings = () => {
       headers: { Authorization: token }
     });
     toast.success("your account has bened delated successfully!")
-    setTimeout(() => {
-      localStorage.removeItem("token");
-      window.location.href = "/signup";
-    }, 3000)
-
+    localStorage.removeItem("token");
+    navigate("/signup", { replace: true });
+  
   }
   };
 
