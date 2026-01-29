@@ -67,7 +67,7 @@ const ProjectManage = () => {
 
 
 
-      setFilterTasks(selected || []);
+      setFilterTasks(tasks || []);
     }
   }, [tasks, id]);
 

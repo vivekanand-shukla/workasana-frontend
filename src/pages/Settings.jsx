@@ -77,7 +77,7 @@ const Settings = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('setProectLink');
-    window.location.href = '/login';
+   navigate("/login", { replace: true });
      toast.success("Logout successfully")
   };
 
