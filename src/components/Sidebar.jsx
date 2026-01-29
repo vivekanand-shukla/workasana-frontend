@@ -38,7 +38,7 @@ const Sidebar = () => {
             Dashboard
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink  to={projectId ? `/projectmanage/${projectId}` : "/"}   style={({ isActive }) => ({
             display: 'flex',
             alignItems: 'center',
@@ -51,7 +51,7 @@ const Sidebar = () => {
             <MdFolder size={18} />
             Project
           </NavLink>
-        </li>
+        </li> */}
         <li>
           <NavLink to="/team"     style={({ isActive }) => ({
             display: 'flex',
