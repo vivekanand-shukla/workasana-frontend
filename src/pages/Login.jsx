@@ -107,6 +107,62 @@ const navigate = useNavigate();
                         Sign in
                     </button>
                 </div>
+
+                
+            {/* ===== Social Login Section Start ===== */}
+
+<div style={{ marginTop: "20px" }}>
+
+  <div style={{
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "15px"
+  }}>
+    <div style={{ flex: 1, height: "1px", background: "#ccc" }} />
+    <span style={{ margin: "0 10px", fontSize: "14px", color: "#888" }}>
+      OR
+    </span>
+    <div style={{ flex: 1, height: "1px", background: "#ccc" }} />
+  </div>
+
+  <button
+    type="button"
+    onClick={() => window.location.href = `${url}/auth/google`}
+    style={{
+      width: "100%",
+      padding: "10px",
+      borderRadius: "6px",
+      border: "1px solid #ddd",
+      background: "#fff",
+      color: "#000",
+      fontWeight: "500",
+      cursor: "pointer",
+      marginBottom: "10px"
+    }}
+  >
+    Continue with Google
+  </button>
+
+  <button
+    type="button"
+    onClick={() => window.location.href = `${url}/auth/github`}
+    style={{
+      width: "100%",
+      padding: "10px",
+      borderRadius: "6px",
+      border: "none",
+      background: "#000",
+      color: "#fff",
+      fontWeight: "500",
+      cursor: "pointer"
+    }}
+  >
+    Continue with GitHub
+  </button>
+
+</div>
+
+{/* ===== Social Login Section End ===== */}
                 <p className='my-4'>Don’t have an account?{<><Link to={`/signup`}>Signup </Link></>}  </p>
             </form>
         </div>

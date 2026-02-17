@@ -8,7 +8,7 @@ import Signup from './pages/Signup.jsx'
 import ProjectManage from './pages/ProjectManage.jsx'
 import TsakDetail from './pages/TsakDetail.jsx'
 import Report from './pages/Report.jsx'
-
+import OAuthSuccess from './customHooks/OAuthSuccess.jsx';
 import Team from './pages/Team.jsx'
 import axios from "axios";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
@@ -74,6 +74,14 @@ const routes = createBrowserRouter([
     element: (
       <PublicRoute>
         <Login />
+      </PublicRoute>
+    )
+  },
+  {
+    path: "/oauth-success",
+    element: (
+      <PublicRoute>
+        <OAuthSuccess />
       </PublicRoute>
     )
   },
