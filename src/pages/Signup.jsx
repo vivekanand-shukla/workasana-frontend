@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify";
 const Signup = () => {
-      const { url } = Url()
+    const { url } = Url()
     const navigate = useNavigate();
+    const [otpSent, setOtpSent] = useState(false);
+
 
 
     const [otp, setOtp] = useState("");
@@ -46,7 +48,8 @@ const Signup = () => {
 
             if (response?.success === true) {
                 toast.success("Signup successful! OTP sent.");
-                setShowOtpModal(true);  
+                setShowOtpModal(true);
+               
             } else {
                 toast.error(response?.message || "Signup failed");
             }
@@ -66,7 +69,7 @@ const Signup = () => {
             toast.success("Email verified!");
             setShowOtpModal(false);
             navigate("/login");
-
+ 
         } catch (err) {
             toast.error("Invalid or expired OTP");
         }
@@ -78,6 +81,7 @@ const Signup = () => {
             await resendOtp(form.email);
             toast.success("OTP resent successfully");
             setResendCooldown(60);
+            
         } catch (err) {
             toast.error("Failed to resend OTP");
         }
@@ -103,12 +107,37 @@ const Signup = () => {
 
     return (
         <div className='d-flex justify-content-center align-items-center' style={{ height: "100vh", backgroundColor: "#f8f9fa", padding: "20px" }}>
+            {!otpSent && (
+                <button
+                    type="submit"
+                    disabled={loading}
+                    onClick={() => setShowOtpModal(true)}
+                    style={{
+                        padding: "6px 14px",
+                        backgroundColor: "#4f46e5",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        fontSize: "13px",
+                        fontWeight: "500",
+                        cursor: "pointer",
+                        marginBottom: "15px",
+                        alignSelf: "flex-end",
+                        opacity: loading ? 0.6 : 1
+                    }}
+                >
+                    {loading ? "Sending..." : "Send OTP"}
+                </button>
+            )}
+
             <form onSubmit={handleSignup} className='d-flex justify-content-center flex-column align-items-center' style={{ width: "100%", maxWidth: "380px" }}>
                 <h5 style={{ color: "#6366f1", marginBottom: "20px", fontWeight: "600" }}>workasana</h5>
                 <h5 style={{ color: "#1f2937", marginBottom: "8px", fontWeight: "600" }}>Sign up to your account</h5>
                 <small className='text-secondary' style={{ marginBottom: "30px" }}>Please enter your details</small>
 
                 {/* // */}
+
+
                 {showOtpModal && (
                     <div
                         style={{
@@ -207,8 +236,21 @@ const Signup = () => {
                                     ? `Resend in ${resendCooldown}s`
                                     : "Resend OTP"}
                             </button>
+                            <button
+                                onClick={() => setShowOtpModal(false)}
+                                style={{
+                                    marginTop: "15px",
+                                    background: "none",
+                                    border: "none",
+                                    color: "#6b7280",
+                                    fontSize: "13px",
+                                    cursor: "pointer"
+                                }}
+                            >
+                                Cancel
+                            </button>
 
-                   
+
                         </div>
                     </div>
                 )}
@@ -291,6 +333,8 @@ const Signup = () => {
                         Sign up
 
                     </button>
+
+
                 </div>
 
 

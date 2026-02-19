@@ -9,7 +9,7 @@ export const registerUser = async (userData) => {
         const response = await axios.post(`${API_BASE_URL}/auth/signup`, userData, {
             headers: { "Content-Type": "application/json" },
         });
-  
+             
         return response.data;
     } catch (error) {
         throw error.response?.data?.message || "Registration failed";
@@ -20,6 +20,8 @@ export const registerUser = async (userData) => {
 export const resendOtp = async (email) => {
     try {
         const response = await axios.post(`${API_BASE_URL}/auth/resend-otp`, { email });
+
+
         return response.data;
     } catch (error) {
         throw error.response?.data?.message || "Failed to resend OTP";
